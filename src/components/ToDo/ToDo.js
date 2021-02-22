@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import AddTask from "../AddTask/AddTask";
+import styles from "./ToDo.module.css";
 import { v4 as uuidv4 } from "uuid";
+
+console.log(styles);
 
 class ToDo extends Component {
   state = {
     tasks: [],
-    inputValue: "",
   };
 
   handleSubmit = (val) => {
     const tasks = [...this.state.tasks];
     tasks.push(val);
-    console.log(tasks);
+
     this.setState({
       tasks,
     });
@@ -19,13 +21,17 @@ class ToDo extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.body}>
+        <h1>My Todolist</h1>
         <div>
           <AddTask cb={this.handleSubmit} />
         </div>
-        <div>
+        <div className={styles.tasksContainer}>
           {this.state.tasks.map((task) => (
-            <div key={uuidv4()}>{task}</div>
+            <div key={uuidv4()}>
+              <input className={styles.taskCheckbox} type="checkbox" />
+              <div className={styles.task}> {task}</div>
+            </div>
           ))}
         </div>
       </div>
