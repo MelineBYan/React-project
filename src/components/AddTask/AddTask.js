@@ -1,40 +1,46 @@
 import React, { Component } from "react";
-import styles from "./AddTask.module.css";
+import { Form, Button, InputGroup } from "react-bootstrap";
+
 class AddTask extends Component {
   state = {
     inputValue: "",
   };
 
   handleChange = ({ target }) => {
-    console.log(this.state);
     this.setState({
       inputValue: target.value,
     });
   };
 
   handleSubmit = (e) => {
-    const { cb } = this.props;
-    if (this.state.inputValue) {
-      cb(this.state.inputValue);
-      this.setState({
-        inputValue: "",
-      });
-    }
+    if (!this.state.inputValue || (e.type === "keypress" && e.key !== "Enter"))
+      return;
+
+    this.props.cb(this.state.inputValue);
+    this.setState({
+      inputValue: "",
+    });
   };
 
   render() {
     return (
-      <div className={styles.addTask}>
-        <input
-          className={styles.addTaskInput}
-          type="text"
-          placeholder="Add new task"
-          value={this.state.inputValue}
-          onChange={this.handleChange}
-        />
-        <button className={styles.addTaskButton} onClick={this.handleSubmit}>
-          +
-        </button>
+      <div>
+        <InputGroup size="lg" className="mb-5 mt-5">
+          <Form.Control
+            placeholder="Add task"
+            type="text"
+            placeholder="Add task"
+            value={this.state.inputValue}
+            onChange={this.handleChange}
+            onKeyPress={this.handleSubmit}
+          />
+
+          <InputGroup.Append>
+            <Button variant="primary" onClick={this.handleSubmit}>
+              Add
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
       </div>
     );
   }
