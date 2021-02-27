@@ -1,0 +1,6 @@
+.content {
+  backdrop-filter: blur(3px);
+  background-color: inherit;
+  border: none;
+  box-shadow: 0 0 55px;
+}

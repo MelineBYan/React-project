@@ -3,9 +3,7 @@ import AddTask from "../AddTask/AddTask";
 import Task from "../Task/Task";
 import styles from "./ToDo.module.css";
 import { v4 as uuidv4 } from "uuid";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faTrash, faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 class ToDo extends Component {
   state = {
