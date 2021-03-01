@@ -23,6 +23,7 @@ class AddTask extends Component {
   };
 
   render() {
+    const { isCheckedAnyTask, isChecked } = this.props;
     return (
       <div>
         <InputGroup size="lg" className="mb-5 mt-5">
@@ -33,10 +34,15 @@ class AddTask extends Component {
             value={this.state.inputValue}
             onChange={this.handleChange}
             onKeyPress={this.handleSubmit}
+            disabled={isCheckedAnyTask}
           />
 
           <InputGroup.Append>
-            <Button variant="primary" onClick={this.handleSubmit}>
+            <Button
+              variant="primary"
+              onClick={this.handleSubmit}
+              disabled={isCheckedAnyTask}
+            >
               Add
             </Button>
           </InputGroup.Append>
