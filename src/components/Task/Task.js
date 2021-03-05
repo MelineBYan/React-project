@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Task.module.css";
+import { memo } from "react";
 import { Col, Card, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -53,4 +54,4 @@ const Task = ({
   );
 };
 
-export default Task;
+export default memo(Task);
