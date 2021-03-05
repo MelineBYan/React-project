@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 
-class AddTask extends Component {
+class AddTask extends PureComponent {
   state = {
     inputValue: "",
   };
@@ -41,7 +41,7 @@ class AddTask extends Component {
             <Button
               variant="primary"
               onClick={this.handleSubmit}
-              disabled={isCheckedAnyTask}
+              disabled={isCheckedAnyTask || !this.state.inputValue}
             >
               Add
             </Button>

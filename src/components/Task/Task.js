@@ -28,7 +28,8 @@ const Task = ({
       <Form.Check
         type="checkbox"
         className="bg-outline-secondary"
-        onClick={() => handleToggleChecked(task._id)}
+        onChange={() => handleToggleChecked(task._id)}
+        checked={isChecked}
       ></Form.Check>
       <Card className={cls.join(" ")}>
         <Card.Header className="d-inline-flex  justify-content-between">

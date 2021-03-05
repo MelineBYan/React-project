@@ -44,7 +44,24 @@ class ToDo extends Component {
       checkedTasks: new Set(),
     });
   };
+
+  handleToggleAllChecked = () => {
+    if (this.state.checkedTasks.size !== this.state.tasks.length) {
+      const checkedTasks = new Set();
+      this.state.tasks.map((task) => checkedTasks.add(task._id));
+
+      this.setState({
+        checkedTasks,
+      });
+    } else {
+      this.setState({
+        checkedTasks: new Set(),
+      });
+    }
+  };
+
   render() {
+    const { tasks, checkedTasks } = this.state;
     return (
       <Container>
         <Row className="mt-3 d-flex justify-content-center">
@@ -79,6 +96,17 @@ class ToDo extends Component {
             disabled={!!!this.state.checkedTasks.size}
           >
             Delete All Checked
+          </Button>
+          <Button
+            variant="primary"
+            className="ml-5"
+            onClick={this.handleToggleAllChecked}
+            disabled={!tasks.length}
+          >
+            {(!checkedTasks.size && !tasks.length) ||
+            (tasks && tasks.length !== checkedTasks.size)
+              ? "Check All"
+              : "Remove Checked"}
           </Button>
         </Row>
       </Container>
