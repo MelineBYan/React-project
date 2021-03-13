@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Task.module.css";
 import { memo } from "react";
+import PropTypes from "prop-types";
 import { Col, Card, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -59,6 +60,17 @@ const Task = ({
       </Card>
     </Col>
   );
+};
+Task.propTypes = {
+  task: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
+  handleDeleteTask: PropTypes.func.isRequired,
+  handleToggleChecked: PropTypes.func.isRequired,
+  isCheckedAnyTask: PropTypes.bool.isRequired,
+  getEditableTask: PropTypes.func.isRequired,
 };
 
 export default memo(Task);

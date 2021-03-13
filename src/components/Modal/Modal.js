@@ -76,7 +76,6 @@ class Modals extends React.Component {
               onChange={this.handleChange}
               onKeyPress={this.handleSubmit}
               ref={this.inputRef}
-              //   disabled={isCheckedAnyTask}
             />
           </InputGroup>
           <InputGroup className="mb-5 mt-3">
@@ -108,6 +107,14 @@ class Modals extends React.Component {
 
 Modals.propTypes = {
   onHide: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  isOpenEditTaskModal: PropTypes.bool.isRequired,
+  isOpenAddTaskModal: PropTypes.bool.isRequired,
+  editableTask: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Modals;

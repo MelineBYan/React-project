@@ -23,5 +23,11 @@ const Confirm = (props) => {
     </Modal>
   );
 };
+Confirm.propTypes = {
+  onHide: PropTypes.func.isRequired,
+  handleDeleteCheckedTasks: PropTypes.func.isRequired,
+  countOrTaskName: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+};
 
 export default Confirm;

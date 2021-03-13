@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Task from "../Task/Task";
 import Modal from "../Modal/Modal";
 import Confirm from "../Confirm/Confirm";
-import PropTypes from "prop-types";
 import { v4 as uuidv4 } from "uuid";
 import { Container, Row, Button } from "react-bootstrap";
 
@@ -190,16 +189,5 @@ class ToDo extends Component {
     );
   }
 }
-
-ToDo.propTypes = {
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-    })
-  ),
-
-  checkedTasks: PropTypes.instanceOf(Set),
-};
 
 export default ToDo;
