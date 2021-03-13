@@ -11,6 +11,7 @@ const Task = ({
   handleToggleChecked,
   isCheckedAnyTask,
   isChecked,
+  getEditableTask,
 }) => {
   const cls = [styles.content];
   if (isChecked) {
@@ -34,8 +35,7 @@ const Task = ({
       ></Form.Check>
       <Card className={cls.join(" ")}>
         <Card.Header className="d-inline-flex  justify-content-between">
-          <h5 className="mr-auto">{task.title}</h5>
-
+          <h3 className="mr-auto">Title: {task.title}</h3>
           <Button
             type="button"
             className="align-self-flex-end"
@@ -45,10 +45,17 @@ const Task = ({
           >
             <FontAwesomeIcon icon={faTrash} />
           </Button>
-          <Button variant="primary" disabled={isCheckedAnyTask}>
+        </Card.Header>
+        <Card.Body className="d-inline-flex  justify-content-between">
+          <h5 className="mr-auto">Description: {task.description}</h5>
+          <Button
+            variant="warning"
+            disabled={isCheckedAnyTask}
+            onClick={() => getEditableTask(task)}
+          >
             <FontAwesomeIcon icon={faEdit} />
           </Button>
-        </Card.Header>
+        </Card.Body>
       </Card>
     </Col>
   );

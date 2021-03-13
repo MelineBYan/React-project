@@ -1,15 +1,10 @@
 .body {
-  /* background-image: linear-gradient(
-    to right bottom,
-    #d3c9ae,
-    #e3e657,
-    #8cc0c5,
-    #73ade4,
-    #b6b9ae
-  ); */
-  background-image: url(https://cdn.pixabay.com/photo/2014/02/27/16/10/tree-276014__340.jpg);
-
+  background-image: url(https://image.shutterstock.com/image-photo/morning-coffee-mug-breakfast-empty-600w-670517314.jpg);
+  /* background-color: rosybrown; */
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  /* opacity: 0.8; */
 }
