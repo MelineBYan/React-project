@@ -6,18 +6,22 @@ const Confirm = (props) => {
   const { onHide, countOrTaskName, handleDeleteCheckedTasks } = props;
   return (
     <Modal show={true} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
-      </Modal.Header>
+      <Modal.Header
+        closeButton
+        className="bg-primary text-light"
+      ></Modal.Header>
       <Modal.Body>
-        Do you sure to delete {countOrTaskName} of tasks ?
+        <Modal.Title>
+          Are you sure you want to delete {countOrTaskName}
+          {countOrTaskName === 1 ? " task ?" : " tasks ?"}
+        </Modal.Title>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Close
-        </Button>
         <Button variant="danger" onClick={handleDeleteCheckedTasks}>
-          Delete
+          Yes
+        </Button>
+        <Button variant="outline-primary" onClick={onHide}>
+          Cancel
         </Button>
       </Modal.Footer>
     </Modal>

@@ -1,18 +1,21 @@
 import React, { createRef } from "react";
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
-import { Form, Modal, Button, InputGroup, Row, Col } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import formatDate from "../../Utils/dateFormatter";
+import { Form, Modal, Button, InputGroup } from "react-bootstrap";
 
-class Modals extends React.Component {
+class TaskModal extends React.Component {
   constructor(props) {
     super(props);
     this.inputRef = createRef(null);
-
     this.state = {
       title: "",
       description: "",
+      date: new Date(),
+      ...this.props.editableTask,
     };
   }
+
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({
@@ -21,83 +24,73 @@ class Modals extends React.Component {
   };
 
   handleSubmit = (e) => {
-    if (
-      !this.state.title ||
-      !this.state.description ||
-      (e.type === "keypress" && e.key !== "Enter")
-    )
+    const { title, description, date } = this.state;
+    if (!title || !description || (e.type === "keypress" && e.key !== "Enter"))
       return;
-    this.props.onSubmit({ _id: uuidv4(), ...this.state });
+
+    this.props.onSubmit({ ...this.state, date: formatDate(date) });
 
     this.setState({
       title: "",
       description: "",
-      inputRef: createRef(),
     });
     this.props.onHide();
   };
+
+  setDate = (date) => {
+    console.log(date, typeof date);
+    this.setState({
+      date,
+    });
+  };
   componentDidMount() {
-    const { isOpenEditTaskModal, editableTask } = this.props;
-    if (isOpenEditTaskModal && editableTask) {
-      this.setState({
-        title: editableTask.title,
-        description: editableTask.description,
-      });
-    }
     this.inputRef.current.focus();
   }
 
   render() {
-    const {
-      onHide,
-      onSubmit,
-      isOpenEditTaskModal,
-      isOpenAddTaskModal,
-      editableTask,
-    } = this.props;
-
-    const { title, description } = this.state;
+    const { onHide, editableTask } = this.props;
+    const { title, description, date } = this.state;
 
     return (
       <Modal show={true} onHide={onHide}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {isOpenAddTaskModal ? "Add Tasks" : "Edit Tasks"}
-          </Modal.Title>
+        <Modal.Header closeButton className="bg-primary text-light">
+          <Modal.Title>{!editableTask ? "Add Task" : "Edit Task"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InputGroup size="lg" className="mb-5 mt-5">
+          <InputGroup className="my-3">
             <Form.Control
               name="title"
               placeholder="Add task"
               type="text"
-              placeholder="Add task"
+              placeholder="Title"
               value={title}
               onChange={this.handleChange}
               onKeyPress={this.handleSubmit}
               ref={this.inputRef}
             />
           </InputGroup>
-          <InputGroup className="mb-5 mt-3">
+          <InputGroup className="my-3">
             <Form.Control
               name="description"
               value={description}
+              placeholder="Description"
               onChange={this.handleChange}
               as="textarea"
               style={{ resize: "none" }}
             />
           </InputGroup>
+          <DatePicker selected={date} onChange={(date) => this.setDate(date)} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>
-            Close
-          </Button>
           <Button
             variant="primary"
             onClick={onHide}
             onClick={this.handleSubmit}
           >
-            {isOpenAddTaskModal ? "Add" : "Save"}
+            {!editableTask ? "Add" : "Save"}
+          </Button>
+          <Button variant="outline-primary" onClick={onHide}>
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
@@ -105,16 +98,14 @@ class Modals extends React.Component {
   }
 }
 
-Modals.propTypes = {
+TaskModal.propTypes = {
   onHide: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  isOpenEditTaskModal: PropTypes.bool.isRequired,
-  isOpenAddTaskModal: PropTypes.bool.isRequired,
   editableTask: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
 
-export default Modals;
+export default TaskModal;
