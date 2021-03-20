@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Task from "../Task/Task";
-import TaskModal from "../Modal/TaskModal";
-import ConfirmModal from "../Modal/ConfirmModal";
-import InfoModal from "../Modal/InfoModal";
+import Task from "../../Task/Task";
+import TaskModal from "../../Modal/TaskModal";
+import ConfirmModal from "../../Modal/ConfirmModal";
+import InfoModal from "../../Modal/InfoModal";
 import { Container, Row, Button, Form, Col } from "react-bootstrap";
-import URL from "../../Utils/Constant";
+import URL from "../../../Utils/Constant";
 
 class ToDo extends Component {
   state = {
@@ -187,7 +187,7 @@ class ToDo extends Component {
     };
 
     return (
-      <Container className="bg-light text-light bg-dark shadow-lg p-5">
+      <Container className="mt-5 bg-light text-light bg-dark shadow-lg p-5">
         <h1 className="text-center my-5">ToDolist Task Manager</h1>
         <Row className="d-flex mt-5">
           <Button
@@ -216,7 +216,7 @@ class ToDo extends Component {
         </Row>
         <Row className="mt-5 d-flex justify-content-center align-content-center mx-auto">
           {tasks.length === 0 ? (
-            <h4>Please, add new Tasks</h4>
+            <h4>Task list is empty</h4>
           ) : filteredTasks === "All" ? (
             taskJSX(orderedTasks)
           ) : filteredTasks === "Completed" ? (

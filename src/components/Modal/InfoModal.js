@@ -8,7 +8,7 @@ const InfoModal = (props) => {
 
   return (
     <Modal show={true} onHide={onHide}>
-      <Modal.Header closeButton className="bg-primary text-light">
+      <Modal.Header closeButton className="bg-info text-light">
         <Modal.Title>Task info</Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-secondary">
@@ -23,7 +23,7 @@ const InfoModal = (props) => {
         </Modal.Title>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-primary" onClick={onHide}>
+        <Button variant="outline-info" onClick={onHide}>
           Cancel
         </Button>
       </Modal.Footer>
