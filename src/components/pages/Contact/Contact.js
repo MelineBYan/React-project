@@ -7,7 +7,7 @@ import {
   faEnvelopeOpenText,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Contact.module.css";
 
 const Contact = () => {
@@ -15,7 +15,7 @@ const Contact = () => {
     return loading;
   };
   return (
-    <>
+    <Container>
       <h1 className="text-center">Contact Us</h1>
       <Row className="align-items-baseline justify-content-space-around">
         <Col sm={4} className="ml-auto">
@@ -42,12 +42,12 @@ const Contact = () => {
           </div>
         </Col>
 
-        <Col sm={4} className="mr-auto">
+        <Col sm={6} className="mr-auto">
           <ContactForm setLoading={setLoading} />
         </Col>
       </Row>
       {setLoading() && <Spinner />}
-    </>
+    </Container>
   );
 };
 
