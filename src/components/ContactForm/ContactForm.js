@@ -2,6 +2,7 @@ import { text } from "@fortawesome/fontawesome-svg-core";
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 import URL from "../../Utils/Constant";
 
 class ContactForm extends Component {
@@ -79,10 +80,7 @@ class ContactForm extends Component {
       </Form.Group>
     ));
     return (
-      <Form
-        style={{ margin: "200px auto 0px" }}
-        onSubmit={(e) => e.preventDefault()}
-      >
+      <Form onSubmit={(e) => e.preventDefault()}>
         {inputsJSX}
         <Button variant="info" onClick={this.handleSend} className="col">
           Send
@@ -91,4 +89,34 @@ class ContactForm extends Component {
     );
   }
 }
+ContactForm.propTypes = {
+  history: PropTypes.shape({
+    action: PropTypes.string,
+    block: PropTypes.func.isRequired,
+    createHref: PropTypes.func.isRequired,
+    go: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+    goForward: PropTypes.func.isRequired,
+    length: PropTypes.number.isRequired,
+    listen: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    hash: PropTypes.string,
+    key: PropTypes.string,
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    state: PropTypes.string,
+  }).isRequired,
+  match: PropTypes.shape({
+    isExact: PropTypes.bool,
+    params: PropTypes.shape({
+      path: PropTypes.string,
+      url: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
+  setLoading: PropTypes.func.isRequired,
+};
 export default withRouter(ContactForm);
