@@ -34,11 +34,9 @@ class TaskModal extends React.Component {
       title: "",
       description: "",
     });
-    this.props.onHide();
   };
 
   setDate = (date) => {
-    console.log(date, typeof date);
     this.setState({
       date,
     });

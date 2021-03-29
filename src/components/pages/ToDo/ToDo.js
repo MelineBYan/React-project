@@ -3,8 +3,10 @@ import Task from "../../Task/Task";
 import TaskModal from "../../Modal/TaskModal";
 import ConfirmModal from "../../Modal/ConfirmModal";
 import InfoModal from "../../Modal/InfoModal";
-import { Container, Row, Button, Form, Col } from "react-bootstrap";
+import Spinner from "../../Spinner/Spinner";
+import { Container, Row, Button, Form } from "react-bootstrap";
 import URL from "../../../Utils/Constant";
+import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 class ToDo extends Component {
   state = {
@@ -15,11 +17,11 @@ class ToDo extends Component {
     isOpenConfirmModal: false,
     editableTask: null,
     taskInfo: null,
+    loading: false,
   };
 
   getEditableTask = (task) => {
     const editableTask = { ...task, date: new Date(task.date) };
-    console.log(task, editableTask);
     this.setState({
       editableTask,
       isOpenModal: true,
@@ -31,6 +33,7 @@ class ToDo extends Component {
   };
 
   handleSubmit = (task) => {
+    this.setState({ loading: true });
     fetch(`${URL}/task`, {
       method: "POST",
       body: JSON.stringify(task),
@@ -39,16 +42,22 @@ class ToDo extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) throw data.error;
-        console.log(data);
         const tasks = [...this.state.tasks, { ...data }];
         this.setState({
           tasks,
+          isOpenModal: false,
         });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.message))
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
   };
 
   handleEditTask = (task) => {
+    this.setState({ loading: true });
     const { editableTask } = this.state;
     fetch(`${URL}/task/${task._id}`, {
       method: "PUT",
@@ -57,25 +66,30 @@ class ToDo extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.error) throw data.error;
-        console.log(data);
         const tasks = [...this.state.tasks];
         tasks[tasks.findIndex((t) => t._id === editableTask._id)] = data;
         this.setState({
           tasks,
+          isOpenModal: false,
+          editableTask: null,
         });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log("error", err.message))
+      .finally(() => {
+        this.setState({
+          loading: false,
+        });
+      });
   };
 
   handleDeleteTask = (id) => {
+    this.setState({ loading: true });
     fetch(`${URL}/task/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.error) throw data.error;
         let tasks = [...this.state.tasks];
         tasks = tasks.filter((t) => t._id !== id);
@@ -83,7 +97,8 @@ class ToDo extends Component {
           tasks,
         });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.message))
+      .finally(() => this.setState({ loading: false }));
   };
 
   handleToggleChecked = (id) => {
@@ -99,6 +114,7 @@ class ToDo extends Component {
   };
 
   handleDeleteCheckedTasks = () => {
+    this.setState({ loading: true });
     const { checkedTasks } = this.state;
     fetch(`${URL}/task`, {
       method: "PATCH",
@@ -109,7 +125,6 @@ class ToDo extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.error) throw data.error;
         let tasks = [...this.state.tasks];
         tasks = tasks.filter((task) => !checkedTasks.has(task._id));
@@ -118,7 +133,8 @@ class ToDo extends Component {
           checkedTasks: new Set(),
         });
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => console.log(err.message))
+      .finally(() => this.setState({ loading: false }));
 
     this.handleHideModal();
   };
@@ -148,10 +164,20 @@ class ToDo extends Component {
   };
 
   componentDidMount() {
+    this.setState({ loading: true });
     fetch("http://localhost:3001/task")
       .then((res) => res.json())
-      .then((tasks) => this.setState({ tasks }))
-      .catch((err) => console.error(err.message));
+      .then((tasks) => {
+        if (tasks.error) throw tasks.error;
+        this.setState({ tasks, loading: false });
+      })
+      .catch((err) => {
+        console.error(err.message);
+        this.props.history.push("/error/404");
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   }
 
   render() {
@@ -163,6 +189,8 @@ class ToDo extends Component {
       editableTask,
       filteredTasks,
       taskInfo,
+      loading,
+      deleteLoading,
     } = this.state;
 
     const completedTasks = tasks.filter((task) => checkedTasks.has(task._id));
@@ -187,94 +215,97 @@ class ToDo extends Component {
     };
 
     return (
-      <Container className="mt-5 bg-light text-light bg-dark shadow-lg p-5">
-        <h1 className="text-center my-5">ToDolist Task Manager</h1>
-        <Row className="d-flex mt-5">
-          <Button
-            className="col-4 ml-auto d-inline"
-            variant="primary"
-            onClick={() => {
-              this.setState({
-                isOpenModal: true,
-              });
-            }}
-          >
-            ADD NEW TASK
-          </Button>
+      <>
+        <Container className="mt-5 bg-light text-light bg-dark shadow-lg p-5">
+          <h1 className="text-center my-5">ToDolist Task Manager</h1>
+          <Row className="d-flex mt-5">
+            <Button
+              className="col-4 ml-auto d-inline"
+              variant="primary"
+              onClick={() => {
+                this.setState({
+                  isOpenModal: true,
+                });
+              }}
+            >
+              Add new task
+            </Button>
 
-          <Form.Control
-            as="select"
-            className="col-2 mr-auto ml-3 bg-secondary text-light"
-            custom
-            onChange={(e) => this.setState({ filteredTasks: e.target.value })}
-            disabled={!tasks.length}
-          >
-            <option value="All">All</option>
-            <option value="Completed">Completed</option>
-            <option value="Uncompleted">Uncompleted</option>
-          </Form.Control>
-        </Row>
-        <Row className="mt-5 d-flex justify-content-center align-content-center mx-auto">
-          {tasks.length === 0 ? (
-            <h4>Task list is empty</h4>
-          ) : filteredTasks === "All" ? (
-            taskJSX(orderedTasks)
-          ) : filteredTasks === "Completed" ? (
-            taskJSX(completedTasks)
-          ) : (
-            taskJSX(uncompletedTasks)
+            <Form.Control
+              as="select"
+              className="col-2 mr-auto ml-3 bg-secondary text-light"
+              custom
+              onChange={(e) => this.setState({ filteredTasks: e.target.value })}
+              disabled={!tasks.length}
+            >
+              <option value="All">All</option>
+              <option value="Completed">Completed</option>
+              <option value="Uncompleted">Uncompleted</option>
+            </Form.Control>
+          </Row>
+          <Row className="mt-5 d-flex justify-content-center align-content-center mx-auto">
+            {tasks.length === 0 ? (
+              <h4>Task list is empty</h4>
+            ) : filteredTasks === "All" ? (
+              taskJSX(orderedTasks)
+            ) : filteredTasks === "Completed" ? (
+              taskJSX(completedTasks)
+            ) : (
+              taskJSX(uncompletedTasks)
+            )}
+          </Row>
+          <Row className="justify-content-center mt-5">
+            {!!tasks.length && (
+              <>
+                <Button
+                  variant="danger"
+                  onClick={() => this.setState({ isOpenConfirmModal: true })}
+                  disabled={
+                    !!!checkedTasks.size || filteredTasks === "Uncompleted"
+                  }
+                >
+                  Delete All Checked
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={this.handleToggleAllChecked}
+                  className="ml-5"
+                  disabled={filteredTasks === "Completed"}
+                >
+                  {tasks.length !== checkedTasks.size
+                    ? "Check All"
+                    : "Remove Checked"}
+                </Button>
+              </>
+            )}
+          </Row>
+          {isOpenModal && (
+            <TaskModal
+              onHide={this.handleHideModal}
+              onSubmit={editableTask ? this.handleEditTask : this.handleSubmit}
+              editableTask={editableTask}
+            />
           )}
-        </Row>
-        <Row className="justify-content-center mt-5">
-          {!!tasks.length && (
-            <>
-              <Button
-                variant="danger"
-                onClick={() => this.setState({ isOpenConfirmModal: true })}
-                disabled={
-                  !!!checkedTasks.size || filteredTasks === "Uncompleted"
-                }
-              >
-                Delete All Checked
-              </Button>
-              <Button
-                variant="primary"
-                onClick={this.handleToggleAllChecked}
-                className="ml-5"
-                disabled={filteredTasks === "Completed"}
-              >
-                {tasks.length !== checkedTasks.size
-                  ? "Check All"
-                  : "Remove Checked"}
-              </Button>
-            </>
+          {isOpenConfirmModal && (
+            <ConfirmModal
+              onHide={this.handleHideModal}
+              handleDeleteCheckedTasks={this.handleDeleteCheckedTasks}
+              countOrTaskName={
+                checkedTasks.size !== 1
+                  ? checkedTasks.size
+                  : tasks.filter(
+                      (task) => task._id === checkedTasks.values().next().value
+                    )[0].title
+              }
+            />
           )}
-        </Row>
-        {isOpenModal && (
-          <TaskModal
-            onHide={this.handleHideModal}
-            onSubmit={editableTask ? this.handleEditTask : this.handleSubmit}
-            editableTask={editableTask}
-          />
-        )}
-        {isOpenConfirmModal && (
-          <ConfirmModal
-            onHide={this.handleHideModal}
-            handleDeleteCheckedTasks={this.handleDeleteCheckedTasks}
-            countOrTaskName={
-              checkedTasks.size !== 1
-                ? checkedTasks.size
-                : tasks.filter(
-                    (task) => task._id === checkedTasks.values().next().value
-                  )[0].title
-            }
-          />
-        )}
 
-        {taskInfo && (
-          <InfoModal onHide={this.handleHideModal} task={taskInfo} />
-        )}
-      </Container>
+          {taskInfo && (
+            <InfoModal onHide={this.handleHideModal} task={taskInfo} />
+          )}
+        </Container>
+        {loading && <Spinner />}
+      </>
     );
   }
 }

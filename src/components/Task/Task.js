@@ -2,7 +2,9 @@ import React from "react";
 import styles from "./Task.module.css";
 import { memo } from "react";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import { Col, Card, Button } from "react-bootstrap";
+import Spinner from "../../components/Spinner/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -19,6 +21,7 @@ const Task = ({
   completed,
   getEditableTask,
   getTaskInfo,
+  ...props
 }) => {
   const cls = [styles.content];
   if (completed) {
@@ -41,7 +44,10 @@ const Task = ({
       >
         <FontAwesomeIcon icon={faCheck} className={clscheck.join(" ")} />
       </Button>
-      <Card className={cls.join(" ")}>
+      <Card
+        className={cls.join(" ")}
+        onDoubleClick={() => props.history.push(`/task/${task._id}`)}
+      >
         <Card.Text className="d-inline-flex">
           <span className="mr-auto ml-3">{task.title}</span>
 
@@ -54,7 +60,7 @@ const Task = ({
           </Button>
           <Button
             type="button"
-            variant="danger"
+            variant="secondary"
             className="mx-1"
             onClick={(e) => handleDeleteTask(task._id)}
             disabled={isCheckedAnyTask}
@@ -86,4 +92,4 @@ Task.propTypes = {
   getEditableTask: PropTypes.func.isRequired,
 };
 
-export default memo(Task);
+export default withRouter(memo(Task));
