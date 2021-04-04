@@ -62,7 +62,7 @@ const ContactContextProvider = (props) => {
   const handleChange = ({ target: { name, value } }) => {
     let valid = true;
     let error =
-      isRequired(value.trim()) ||
+      isRequired(value.trim(), name) ||
       minLength1(value.trim()) ||
       ((name === "name" || name === "email") && maxLength50(value.trim())) ||
       (name === "email" && validateEmail(value.trim())) ||
