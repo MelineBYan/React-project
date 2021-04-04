@@ -1,6 +1,4 @@
 import React from "react";
-import ContactForm from "../../ContactForm/ContactForm";
-import Spinner from "../../Spinner/Spinner";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,27 +8,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Contact.module.css";
+import ContactFormWithHooks from "../../ContactFormWithHooks/ContactFormWithHooks";
+import ContactContextProvider from "../../../Context/Providers/ContactContextProvider";
 
 const Contact = () => {
-  const setLoading = (loading) => {
-    return loading;
-  };
   return (
-    <Container className="">
-      <h1 className="text-center mt-5 pt-3">Contact Us</h1>
-      <Row className=" mt-5 align-items-center">
-        <Col sm={6} className="ml-auto  mt-5 pt-5">
+    <Container className={`fluid ${styles.cover} `}>
+      <h1 className="text-center ">Contact Us</h1>
+      <Row className=" mt-5 pt-5  align-items-center justify-content-space-around mx-5">
+        <Col xs={12} md={4} className=" ml-auto  mt-5 ">
           <div>
             <div className={styles.iconWrapper}>
               <FontAwesomeIcon icon={faMapMarker} className="text-dark h4" />
             </div>
-            <span className="text-info font-weight-bold ml-3 h5">Address</span>
+            <span className="text-info font-weight-bold ml-3 h5">
+              Address, City, Country
+            </span>
           </div>
           <div>
             <div className={styles.iconWrapper}>
               <FontAwesomeIcon icon={faPhone} className="text-dark h4" />
             </div>
-            <span className="text-info font-weight-bold ml-3 h5">Phone</span>
+            <span className="text-info font-weight-bold ml-3 h5">
+              Phone +374 00 000000
+            </span>
           </div>
           <div>
             <div className={styles.iconWrapper}>
@@ -39,15 +40,18 @@ const Contact = () => {
                 className="text-dark h4"
               />
             </div>
-            <span className="text-info font-weight-bold ml-3 h5">Email</span>
+            <span className="text-info font-weight-bold ml-3 h5">
+              Email contact@email.com
+            </span>
           </div>
         </Col>
 
-        <Col sm={6} className="mr-auto  mt-5 pt-5">
-          <ContactForm setLoading={setLoading} />
+        <Col xs={12} md={8} className=" mr-auto pr-5">
+          <ContactContextProvider>
+            <ContactFormWithHooks />
+          </ContactContextProvider>
         </Col>
       </Row>
-      {setLoading() && <Spinner />}
     </Container>
   );
 };

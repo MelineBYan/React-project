@@ -30,10 +30,12 @@ class TaskModal extends React.Component {
 
     this.props.onSubmit({ ...this.state, date: formatDate(date) });
 
-    this.setState({
-      title: "",
-      description: "",
-    });
+    if (!this.props.editableTask) {
+      this.setState({
+        title: "",
+        description: "",
+      });
+    }
   };
 
   setDate = (date) => {

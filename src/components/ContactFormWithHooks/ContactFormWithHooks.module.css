@@ -1,0 +1,69 @@
+.errorContainer {
+  background: maroon;
+  position: relative;
+  min-width: 200px;
+  height: 80px;
+  display: inline-block;
+  position: relative;
+  bottom: 130px;
+  border-radius: 4px;
+  padding: 5px;
+  border: 2px solid transparent;
+}
+.errorContainer:before {
+  height: 20px;
+  width: 20px;
+  content: "";
+  background-color: maroon;
+  position: absolute;
+  transform: rotate(45deg);
+  right: -9px;
+  top: 30%;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+}
+.input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #343a40;
+  color: black;
+}
+
+.input:focus {
+  outline-offset: 0px !important;
+  -webkit-box-shadow: 0 !important;
+  box-shadow: none !important;
+  outline: 0 none !important;
+  background-color: transparent;
+  border-bottom: 2px solid #17a2b8;
+}
+.btn {
+  font-size: 17px;
+}
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn span {
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.btn span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -15px;
+  transform: 0.5s;
+}
+.btn:hover span {
+  padding-right: 25px;
+}
+
+.btn:hover span:after {
+  opacity: 1;
+  right: 0;
+}

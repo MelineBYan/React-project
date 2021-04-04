@@ -1,31 +1,42 @@
-import { text } from "@fortawesome/fontawesome-svg-core";
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import styles from "./ContactForm.module.css";
 import URL from "../../Utils/Constant";
 
-class ContactForm extends Component {
-  state = {
-    name: "",
-    email: "",
-    message: "",
-    loading: false,
-  };
+const ContactForm = (props) => {
+  const [formData, setFormData] = useState({
+    name: {
+      value: "",
+      error: null,
+      valid: false,
+    },
+    email: {
+      value: "",
+      error: null,
+      valid: false,
+    },
+    message: {
+      value: "",
+      error: null,
+      valid: false,
+    },
+  });
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData({
+      ...formData,
       [name]: value,
     });
   };
 
-  handleSend = () => {
-    this.setState({
-      loading: true,
-    });
-    this.props.setLoading(this.state.loading);
-    const body = { ...this.state };
-    delete body.loading;
+  const handleSend = () => {
+    setLoading(true);
+    const body = { ...formData };
     fetch(`${URL}/form`, {
       method: "POST",
       body: JSON.stringify(body),
@@ -34,61 +45,67 @@ class ContactForm extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) throw data.error;
-        this.props.history.push("/");
+        props.history.push("/");
       })
       .catch((err) => {
-        console.error(err);
-        this.setState({
-          loading: false,
-        });
+        console.error(err.message);
+        setLoading(true);
+        setErrorMessage(null);
       });
   };
 
-  render() {
-    const inputs = [
-      {
-        name: "name",
-        type: "text",
-        placeholder: "Name",
-        loading: false,
-      },
-      {
-        name: "email",
-        type: "email",
-        placeholder: "Email",
-      },
-      {
-        name: "message",
-        type: null,
-        placeholder: "Type your message",
-        rows: 3,
-        as: "textarea",
-      },
-    ];
+  const inputs = [
+    {
+      name: "name",
+      type: "text",
+      placeholder: "Name",
+      loading: false,
+    },
+    {
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+    },
+    {
+      name: "message",
+      type: null,
+      placeholder: "Type your message",
+      rows: 3,
+      as: "textarea",
+    },
+  ];
 
-    const inputsJSX = inputs.map((input, idx) => (
-      <Form.Group key={idx}>
-        <Form.Control
-          name={input.name}
-          type={input.type}
-          placeholder={input.placeholder}
-          onChange={this.handleChange}
-          value={this.state[input.name]}
-          as={input.as || undefined}
-          rows={input.rows || undefined}
-        />
-      </Form.Group>
-    ));
-    return (
-      <Form onSubmit={(e) => e.preventDefault()}>
+  const inputsJSX = inputs.map((input, idx) => (
+    <Form.Group key={idx}>
+      <Form.Control
+        name={input.name}
+        type={input.type}
+        placeholder={input.placeholder}
+        onChange={this.handleChange}
+        value={formData[input.name]}
+        as={input.as || undefined}
+        rows={input.rows || undefined}
+        className="col bg-dark text-light d-inline-block"
+      />
+      {errorMessage && (
+        <span className={styles.errorContainer}>
+          {`${input.name} is required`}
+        </span>
+      )}
+    </Form.Group>
+  ));
+  return (
+    <>
+      <p>{this.state.errorMessage}</p>
+      <Form onSubmit={(e) => e.preventDefault()} style={{ maxWidth: "60%" }}>
         {inputsJSX}
         <Button variant="info" onClick={this.handleSend} className="col">
           Send
         </Button>
       </Form>
-    );
-  }
-}
+    </>
+  );
+};
 ContactForm.propTypes = {
   history: PropTypes.shape({
     action: PropTypes.string,
@@ -117,6 +134,5 @@ ContactForm.propTypes = {
       url: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  setLoading: PropTypes.func.isRequired,
 };
 export default withRouter(ContactForm);

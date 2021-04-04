@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Task.module.css";
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Col, Card, Button } from "react-bootstrap";
-import Spinner from "../../components/Spinner/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,

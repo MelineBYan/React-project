@@ -8,3 +8,13 @@
   align-items: center;
   margin: 10px 0px 10px;
 }
+.cover {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: 100%;
+  width: auto;
+  background-image: url(../../../assets/images/contact.jpg);
+  background-size: cover;
+  height: 93vh;
+  overflow: hidden;
+}

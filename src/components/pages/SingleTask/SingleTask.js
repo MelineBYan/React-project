@@ -12,6 +12,7 @@ class SingleTask extends React.Component {
     singleTask: "",
     isEdit: false,
     loading: false,
+    errorMessage: null,
   };
 
   componentDidMount() {
@@ -23,7 +24,7 @@ class SingleTask extends React.Component {
         this.setState({ singleTask });
       })
       .catch((err) => {
-        console.error("error", err.message);
+        console.error("error", err);
         this.props.history.push("/error/500");
       });
   }
@@ -44,20 +45,24 @@ class SingleTask extends React.Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) throw data.error;
-
         this.setState({
           singleTask: data,
           isEdit: false,
         });
       })
-      .catch((err) => console.log(err.message))
+      .catch((err) => {
+        this.setState({
+          singleTask: this.state.singleTask,
+        });
+        console.log(err.message);
+      })
       .finally(() => {
         this.setState({ loading: false });
       });
   };
 
   handleRemoveTask = () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, errorMessage: null });
     const { id } = this.props.match.params;
     fetch(`${URL}/task/${id}`, {
       method: "DELETE",
@@ -68,15 +73,16 @@ class SingleTask extends React.Component {
         this.props.history.push("/");
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log("delete error", err.message);
         this.setState({
           loading: false,
+          errorMessage: err.message,
         });
       });
   };
 
   render() {
-    const { isEdit, singleTask, loading } = this.state;
+    const { isEdit, singleTask, loading, errorMessage } = this.state;
     const {
       title,
       description,
@@ -96,17 +102,18 @@ class SingleTask extends React.Component {
     if (!singleTask) return <Spinner />;
     return (
       <>
+        <div className="mb-5 text-danger">{errorMessage}</div>
         <Card
           className="text-light bg-light mx-auto"
           style={{
             width: "700px",
-            height: "240px",
+            height: "300px",
             borderRadius: "10px",
             marginTop: "150px",
             boxShadow: "4px 1px 20px  black",
           }}
         >
-          <Card.Title className="d-flex  text-dark ml-4 ">
+          <Card.Title className="d-flex  text-dark ml-4 mt-2">
             <h4>{title}</h4>
             <span className="text-danger ml-auto mr-2">{scheduledDate}</span>
             <span className="text-success mr-4">{status}</span>

@@ -5,7 +5,6 @@ import { Modal, Button } from "react-bootstrap";
 
 const InfoModal = (props) => {
   const { onHide, task } = props;
-
   return (
     <Modal show={true} onHide={onHide}>
       <Modal.Header closeButton className="bg-info text-light">

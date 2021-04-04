@@ -48,7 +48,7 @@ class ToDo extends Component {
           isOpenModal: false,
         });
       })
-      .catch((err) => console.log(err.message))
+      .catch((err) => console.log("err", err.message))
       .finally(() => {
         this.setState({
           loading: false,

@@ -1,0 +1,25 @@
+.errorContainer {
+  background: maroon;
+  position: relative;
+  width: 200px;
+  height: 60px;
+  display: inline-block;
+  position: relative;
+  border-radius: 7px;
+  margin-top: 10px;
+  right: 150px;
+  padding: 5px;
+  border: 2px solid transparent;
+}
+.errorContainer:before {
+  height: 20px;
+  width: 20px;
+  content: "";
+  background-color: maroon;
+  position: absolute;
+  transform: rotate(45deg);
+  top: -10px;
+  left: 80%;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+}
