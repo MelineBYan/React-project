@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import formatDate from "../../Utils/dateFormatter";
+import formatDate from "../../Utils/helpers/dateFormatter";
 import { Modal, Button } from "react-bootstrap";
 
 const InfoModal = (props) => {

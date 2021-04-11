@@ -1,14 +1,13 @@
 import React, { useEffect, useContext } from "react";
-import { withRouter } from "react-router-dom";
-import { singleTaskContext } from "../../../Context/Context";
+import { singleTaskContext } from "../../../../Context/Context";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import TaskModal from "../../Modal/TaskModal";
+import TaskModal from "../../../Modal/TaskModal";
 import PropTypes from "prop-types";
-import Spinner from "../../Spinner/Spinner";
-import URL from "../../../Utils/Constant";
+import Spinner from "../../../Spinner/Spinner";
+import { URL } from "../../../../Utils/Constants";
 
 const SingleTaskWithHooks = (props) => {
   const context = useContext(singleTaskContext);
@@ -22,6 +21,7 @@ const SingleTaskWithHooks = (props) => {
     handleToggleEditTask,
     handleEditTask,
   } = context;
+
   useEffect(() => {
     const { id } = props.match.params;
     fetch(`${URL}/task/${id}`)
@@ -36,21 +36,6 @@ const SingleTaskWithHooks = (props) => {
       });
   }, []);
 
-  const {
-    title,
-    description,
-    date,
-    status,
-    created_at,
-    updated_at,
-  } = singleTask;
-  const scheduledDate = `${new Date(date).getDate()} ${new Date(
-    date
-  ).toLocaleString("default", { month: "long" })}`;
-
-  const createdDate = new Date(created_at).toString().slice(0, 10);
-  const updatedDate = new Date(updated_at).toString().slice(0, 10);
-  const editableTask = { ...singleTask, date: new Date(singleTask.date) };
   if (!singleTask) return <Spinner />;
   return (
     <>
@@ -67,28 +52,36 @@ const SingleTaskWithHooks = (props) => {
         }}
       >
         <Card.Title className="d-flex  text-light ml-4 mt-2">
-          <h4>{title}</h4>
-          <span className="text-danger ml-auto mr-2">{scheduledDate}</span>
-          <span className="text-success mr-4">{status}</span>
+          <h4>{singleTask.title}</h4>
+          <span className="text-danger ml-auto mr-2">{`${new Date(
+            singleTask.date
+          ).getDate()} ${new Date(singleTask.date).toLocaleString("default", {
+            month: "long",
+          })}`}</span>
+          <span className="text-success mr-4">{singleTask.status}</span>
         </Card.Title>
-        <Card.Title className="text-light ml-4">{description}</Card.Title>
+        <Card.Title className="text-light ml-4">
+          {singleTask.description}
+        </Card.Title>
         <Card.Body>
           <Card.Text className="text-light">
             Scheduled task for:
             <span className="ml-2 text-info font-weight-bold">
-              {scheduledDate}
+              {`${new Date(singleTask.date).getDate()} ${new Date(
+                singleTask.date
+              ).toLocaleString("default", { month: "long" })}`}
             </span>
           </Card.Text>
           <Card.Text className="text-light">
             Created:
             <span className="ml-2 text-info font-weight-bold">
-              {createdDate}
+              {new Date(singleTask.created_at).toString().slice(0, 10)}
             </span>
           </Card.Text>
           <Card.Text className="text-light">
             Updated:
             <span className="ml-2 text-info font-weight-bold">
-              {updatedDate}
+              {new Date(singleTask.updated_at).toString().slice(0, 10)}
             </span>
           </Card.Text>
         </Card.Body>
@@ -121,7 +114,7 @@ const SingleTaskWithHooks = (props) => {
         <TaskModal
           onHide={handleToggleEditTask}
           onSubmit={handleEditTask}
-          editableTask={editableTask}
+          editableTask={{ ...singleTask, date: new Date(singleTask.date) }}
         />
       )}
       {loading && <Spinner />}
@@ -157,4 +150,4 @@ SingleTaskWithHooks.propTypes = {
     }).isRequired,
   }).isRequired,
 };
-export default withRouter(SingleTaskWithHooks);
+export default SingleTaskWithHooks;

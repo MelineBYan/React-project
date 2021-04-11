@@ -1,0 +1,17 @@
+export const URL = "http://localhost:3001";
+export const SET_SINGLETASK = "SET_SINGLETASK";
+export const TOGGLE_EDIT = "TOGGLE_EDIT";
+export const SET_ERROR = "BEFORE_AFTER_FETCH";
+export const SET_TASKS = "SET_TASKS";
+export const DELETE_TASK = "DELETE_TASK";
+export const TOGGLE_LOADING = "TOGGLE_LOADING";
+export const SET_FILTEREDTASKS = "SET_FILTEREDTASKS";
+export const TOGGLE_CHECKED = "TOGGLE_CHECKED";
+export const SET_ISOPENMODAL = "SET_ISOPENMODAL";
+export const ADD_TASK = "ADD_TASK";
+export const SET_TASKINFO = "SET_TASKINFO";
+export const SET_ISOPENCONFIRMMODAL = "SET_ISOPENCONFIRMMODAL";
+export const SET_EDITABLETASK = "SET_EDITABLETASK";
+export const EDIT_TASK = "EDIT_TASK";
+export const DELETE_CHECKED_TASKS = "DELETE_CHECKED_TASKS";
+export const TOGGLE_ALL_CHECKED = "TOGGLE_ALL_CHECKED";

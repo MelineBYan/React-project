@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./ContactForm.module.css";
-import URL from "../../Utils/Constant";
+import URL from "../../Utils/Constants";
 
 const ContactForm = (props) => {
   const [formData, setFormData] = useState({

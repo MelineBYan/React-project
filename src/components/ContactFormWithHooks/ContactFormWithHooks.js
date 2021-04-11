@@ -9,7 +9,7 @@ import styles from "./ContactFormWithHooks.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faExclamation } from "@fortawesome/free-solid-svg-icons";
 
-const ContactFormWithHooks = (props) => {
+const ContactFormWithHooks = () => {
   const context = useContext(contactContext);
   const { formData, loading, errorMessage, handleChange, handleSend } = context;
   const inputs = [

@@ -1,7 +1,7 @@
 import React, { createRef } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
-import formatDate from "../../Utils/dateFormatter";
+import formatDate from "../../Utils/helpers/dateFormatter";
 import { Form, Modal, Button, InputGroup } from "react-bootstrap";
 
 class TaskModal extends React.Component {

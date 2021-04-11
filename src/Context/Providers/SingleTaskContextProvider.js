@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { singleTaskContext } from "../Context";
-import URL from "../../Utils/Constant";
+import { URL } from "../../Utils/Constants";
 
 const SingleTaskContextProvider = (props) => {
-  const [singleTask, setSingleTask] = useState({});
+  const [singleTask, setSingleTask] = useState(null);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -14,6 +14,7 @@ const SingleTaskContextProvider = (props) => {
 
   const handleEditTask = (singleTask) => {
     setLoading(true);
+    setErrorMessage(null);
     fetch(`${URL}/task/${singleTask._id}`, {
       method: "PUT",
       body: JSON.stringify(singleTask),
@@ -26,7 +27,7 @@ const SingleTaskContextProvider = (props) => {
         setEdit(false);
       })
       .catch((err) => {
-        console.log(err.message);
+        setErrorMessage(err.message);
       })
       .finally(() => {
         setLoading(false);
@@ -51,7 +52,6 @@ const SingleTaskContextProvider = (props) => {
         setErrorMessage(err.message);
       });
   };
-
   return (
     <singleTaskContext.Provider
       value={{

@@ -1,5 +1,5 @@
 // import { contactContext } from "../Context/Context";
-import URL from "../../Utils/Constant";
+import { URL } from "../../Utils/Constants";
 import { contactContext } from "../Context";
 import { withRouter } from "react-router-dom";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import {
   minLength,
   validateEmail,
   isRequired,
-} from "../../Utils/Validators";
+} from "../../Utils/helpers/Validators";
 
 const ContactContextProvider = (props) => {
   const maxLength50 = maxLength(50);
@@ -36,6 +36,18 @@ const ContactContextProvider = (props) => {
 
   const handleSend = () => {
     setLoading(true);
+    setErrorMessage("");
+    // formData
+    //   .keys()
+    //   .reverse()
+    //   .forEach((input) => {
+    //     let error = isRequired(input.value, input.name);
+    //     setFormData({
+    //       ...formData,
+    //       [input.name]: { ...[input.name], error },
+    //     });
+    //   });
+
     const body = {
       name: formData.name.value,
       email: formData.email.value,

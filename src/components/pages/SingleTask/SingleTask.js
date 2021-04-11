@@ -5,7 +5,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import TaskModal from "../../Modal/TaskModal";
 import PropTypes from "prop-types";
 import Spinner from "../../Spinner/Spinner";
-import URL from "../../../Utils/Constant";
+import URL from "../../../Utils/Constants";
 
 class SingleTask extends React.Component {
   state = {

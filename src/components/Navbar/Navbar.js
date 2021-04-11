@@ -27,7 +27,7 @@ class HeaderBar extends React.Component {
   render() {
     const { width, clickMenuBars } = this.state;
     let cls = ["ml-auto"];
-    width < 600 && cls.push("flex-column");
+    width < 600 && cls.push("flex-column justify-content-center");
 
     const navItems = [
       {

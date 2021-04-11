@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import ToDo from "./components/pages/ToDo/ToDo";
 import Contact from "./components/pages/Contact/Contact";
 import About from "./components/pages/About/About";
-import SingleTaskWithHooks from "./components/pages/SingleTaskWithHooks/SingleTaskWithHooks";
+import SingleTaskWithRedux from "./components/pages/SingleTask/SingleTaskWithRedux/SingleTaskWithRedux";
 import SingleTaskContextProvider from "./Context/Providers/SingleTaskContextProvider";
 import Error from "./components/pages/Error/Error";
 
@@ -27,7 +27,7 @@ function App() {
     },
     {
       path: "/task/:id",
-      component: SingleTaskWithHooks,
+      component: SingleTaskWithRedux,
       exact: true,
     },
     {
