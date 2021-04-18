@@ -18,17 +18,17 @@ const ContactContextProvider = (props) => {
     name: {
       value: "",
       error: null,
-      valid: true,
+      valid: false,
     },
     email: {
       value: "",
       error: null,
-      valid: true,
+      valid: false,
     },
     message: {
       value: "",
       error: null,
-      valid: true,
+      valid: false,
     },
   });
   const [errorMessage, setErrorMessage] = useState("");
@@ -37,16 +37,6 @@ const ContactContextProvider = (props) => {
   const handleSend = () => {
     setLoading(true);
     setErrorMessage("");
-    // formData
-    //   .keys()
-    //   .reverse()
-    //   .forEach((input) => {
-    //     let error = isRequired(input.value, input.name);
-    //     setFormData({
-    //       ...formData,
-    //       [input.name]: { ...[input.name], error },
-    //     });
-    //   });
 
     const body = {
       name: formData.name.value,
@@ -80,7 +70,7 @@ const ContactContextProvider = (props) => {
       (name === "email" && validateEmail(value.trim())) ||
       (name === "message" && maxLength100(value.trim()));
 
-    if (error) valid = false;
+    if (!error) valid = true;
     setFormData({
       ...formData,
       [name]: { value, error, valid },

@@ -1,102 +1,83 @@
-import React, { createRef } from "react";
+import React, { useEffect, useRef, memo } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import DatePicker from "react-datepicker";
-import formatDate from "../../Utils/helpers/dateFormatter";
+import {
+  changeModalForm,
+  setDate,
+  submitTaskModalForm,
+  setModalInitialState,
+  resetModalData,
+} from "../../Redux/actions";
 import { Form, Modal, Button, InputGroup } from "react-bootstrap";
 
-class TaskModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inputRef = createRef(null);
-    this.state = {
-      title: "",
-      description: "",
-      date: new Date(),
-      ...this.props.editableTask,
+const TaskModal = (props) => {
+  const inputRef = useRef(null);
+  const {
+    state,
+    onHide,
+    onSubmit,
+    editableTask,
+    changeModalForm,
+    setDate,
+    setState,
+    resetModalData,
+  } = props;
+
+  const { title, description, date } = state;
+  useEffect(() => {
+    inputRef.current.focus();
+    setState(props.editableTask);
+    return () => {
+      resetModalData();
     };
-  }
+  }, []);
 
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleSubmit = (e) => {
-    const { title, description, date } = this.state;
-    if (!title || !description || (e.type === "keypress" && e.key !== "Enter"))
-      return;
-
-    this.props.onSubmit({ ...this.state, date: formatDate(date) });
-
-    if (!this.props.editableTask) {
-      this.setState({
-        title: "",
-        description: "",
-      });
-    }
-  };
-
-  setDate = (date) => {
-    this.setState({
-      date,
-    });
-  };
-  componentDidMount() {
-    this.inputRef.current.focus();
-  }
-
-  render() {
-    const { onHide, editableTask } = this.props;
-    const { title, description, date } = this.state;
-
-    return (
-      <Modal show={true} onHide={onHide}>
-        <Modal.Header closeButton className="bg-primary text-light">
-          <Modal.Title>{!editableTask ? "Add Task" : "Edit Task"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InputGroup className="my-3">
-            <Form.Control
-              name="title"
-              placeholder="Add task"
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={this.handleChange}
-              onKeyPress={this.handleSubmit}
-              ref={this.inputRef}
-            />
-          </InputGroup>
-          <InputGroup className="my-3">
-            <Form.Control
-              name="description"
-              value={description}
-              placeholder="Description"
-              onChange={this.handleChange}
-              as="textarea"
-              style={{ resize: "none" }}
-            />
-          </InputGroup>
-          <DatePicker selected={date} onChange={(date) => this.setDate(date)} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            onClick={onHide}
-            onClick={this.handleSubmit}
-          >
-            {!editableTask ? "Add" : "Save"}
-          </Button>
-          <Button variant="outline-primary" onClick={onHide}>
-            Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-}
+  return (
+    <Modal show={true} onHide={onHide}>
+      <Modal.Header closeButton className="bg-primary text-light">
+        <Modal.Title>{!editableTask ? "Add Task" : "Edit Task"}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <InputGroup className="my-3">
+          <Form.Control
+            name="title"
+            placeholder="Add task"
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => changeModalForm(e.target)}
+            onKeyPress={(e) => submitTaskModalForm(e, state, onSubmit)}
+            ref={inputRef}
+          />
+        </InputGroup>
+        <InputGroup className="my-3">
+          <Form.Control
+            name="description"
+            value={description}
+            placeholder="Description"
+            onChange={(e) => changeModalForm(e.target)}
+            as="textarea"
+            style={{ resize: "none" }}
+          />
+        </InputGroup>
+        <DatePicker selected={date} onChange={(date) => setDate(date)} />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          onClick={onHide}
+          onClick={(e) => submitTaskModalForm(e, state, onSubmit)}
+        >
+          {!editableTask ? "Add" : "Save"}
+        </Button>
+        <Button variant="outline-primary" onClick={onHide}>
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 TaskModal.propTypes = {
   onHide: PropTypes.func.isRequired,
@@ -107,5 +88,23 @@ TaskModal.propTypes = {
     description: PropTypes.string.isRequired,
   }),
 };
+const mapStateToProps = (state) => {
+  return {
+    state: state.taskModalReducer,
+  };
+};
 
-export default TaskModal;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeModalForm: (data) => dispatch(changeModalForm(data)),
+    setDate: (date) => dispatch(setDate(date)),
+    // submitTaskModalForm: (e, state, onSubmit, editablTask) =>
+    //   dispatch((dispatch) =>
+    //     submitTaskModalForm(dispatch, e, state, onSubmit, editablTask)
+    //   ),
+    setState: (data) => dispatch(setModalInitialState(data)),
+    resetModalData: () => dispatch(resetModalData()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(TaskModal));

@@ -1,5 +1,8 @@
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./components/Navbar/Navbar";
 import ToDo from "./components/pages/ToDo/ToDo";
 import Contact from "./components/pages/Contact/Contact";
@@ -8,7 +11,8 @@ import SingleTaskWithRedux from "./components/pages/SingleTask/SingleTaskWithRed
 import SingleTaskContextProvider from "./Context/Providers/SingleTaskContextProvider";
 import Error from "./components/pages/Error/Error";
 
-function App() {
+const App = (props) => {
+  const { errorMessage, successMessage } = props;
   const pages = [
     {
       path: "/",
@@ -37,6 +41,32 @@ function App() {
     },
   ];
 
+  useEffect(() => {
+    errorMessage &&
+      toast.error(`🦄 ${errorMessage}`, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+  }, [errorMessage]);
+
+  useEffect(() => {
+    successMessage &&
+      toast.success(`🦄 ${successMessage}`, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+  }, [successMessage]);
+
   const pagesJSX = pages.map((page, idx) => (
     <Route
       key={idx}
@@ -60,8 +90,14 @@ function App() {
         {pagesJSX}
         <Redirect to="/error/404" />
       </Switch>
+      <ToastContainer />
     </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => ({
+  errorMessage: state.globalReducer.errorMessage,
+  successMessage: state.globalReducer.successMessage,
+});
+
+export default connect(mapStateToProps, null)(App);

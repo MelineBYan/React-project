@@ -5,13 +5,15 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import TaskModal from "../../../Modal/TaskModal";
-import PropTypes, { oneOfType } from "prop-types";
+import PropTypes from "prop-types";
 import Spinner from "../../../Spinner/Spinner";
 import {
   setSingleTask,
-  editSingleTask,
-  removeTask,
+  updateTask,
+  removeOneTask,
   toggleEdit,
+  resetData,
+  resetGlobalData,
 } from "../../../../Redux/actions";
 
 const SingleTaskWithRedux = (props) => {
@@ -24,10 +26,16 @@ const SingleTaskWithRedux = (props) => {
     editTask,
     removeTask,
     toggleEdit,
+    resetState,
   } = props;
 
+  const { history, match } = props;
+  const { id } = match.params;
   useEffect(() => {
     setTask(props);
+    return function () {
+      resetState();
+    };
   }, []);
 
   if (!singleTask) return <Spinner />;
@@ -91,7 +99,7 @@ const SingleTaskWithRedux = (props) => {
             type="button"
             variant="secondary"
             className="mx-1"
-            onClick={() => removeTask(props)}
+            onClick={() => removeTask(id, history)}
           >
             <FontAwesomeIcon icon={faTrash} />
           </Button>
@@ -118,7 +126,7 @@ const SingleTaskWithRedux = (props) => {
       {edit && (
         <TaskModal
           onHide={toggleEdit}
-          onSubmit={editTask}
+          onSubmit={(editable) => editTask(editable, props.location.pathname)}
           editableTask={{ ...singleTask, date: new Date(singleTask.date) }}
         />
       )}
@@ -174,21 +182,27 @@ SingleTaskWithRedux.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { singleTask, edit, errorMessage } = state.singleTask;
+  const { singleTask, edit, errorMessage } = state.singleTaskReducer;
   return {
     singleTask,
     edit,
     errorMessage,
-    loading: state.loading,
+    loading: state.globalReducer.loading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setTask: (props) => dispatch((dispatch) => setSingleTask(dispatch, props)),
-    editTask: (task) => dispatch((dispatch) => editSingleTask(dispatch, task)),
-    removeTask: (props) => dispatch((dispatch) => removeTask(dispatch, props)),
+    editTask: (task, path) =>
+      dispatch((dispatch) => updateTask(dispatch, task, path)),
+    removeTask: (id, history) =>
+      dispatch((dispatch) => removeOneTask(dispatch, id, history)),
     toggleEdit: () => dispatch(toggleEdit()),
+    resetState: () => {
+      dispatch(resetData());
+      dispatch(resetGlobalData());
+    },
   };
 };
 

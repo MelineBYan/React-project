@@ -7,9 +7,7 @@ import ConfirmModal from "../../Modal/ConfirmModal";
 import InfoModal from "../../Modal/InfoModal";
 import Spinner from "../../Spinner/Spinner";
 import PropTypes from "prop-types";
-import { URL } from "../../../Utils/Constants";
 import {
-  setOrRemoveLoading,
   setFilteredTasks,
   toggleCheckedTask,
   setIsOpenModal,
@@ -22,32 +20,9 @@ import {
   getTasks,
   removeOneTask,
   removeCheckedTasks,
-  deleteCheckedTasks,
 } from "../../../Redux/actions";
-import { set } from "mongoose";
 
 class ToDo extends Component {
-  handleDeleteCheckedTasks = () => {
-    setOrRemoveLoading(true);
-    const { checkedTasks } = this.props;
-    fetch(`${URL}/task`, {
-      method: "PATCH",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        tasks: Array.from(checkedTasks),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) throw data.error;
-        this.props.deleteCheckedTasks();
-      })
-      .catch((err) => console.log(err.message))
-      .finally(() => setOrRemoveLoading(false));
-
-    this.handleHideModal();
-  };
-
   componentDidMount() {
     this.props.setTasks(this.props);
   }
@@ -73,6 +48,7 @@ class ToDo extends Component {
       updateTask,
       deleteTask,
       deleteCheckedTasks,
+      errorMessage,
     } = this.props;
 
     const completedTasks = tasks.filter((task) => checkedTasks.has(task._id));
@@ -163,8 +139,8 @@ class ToDo extends Component {
           {isOpenModal && (
             <TaskModal
               onHide={() => {
-                setIsOpenModal(false);
                 setEditable(null);
+                setIsOpenModal(false);
               }}
               onSubmit={editableTask ? updateTask : addTask}
               editableTask={editableTask}
@@ -258,14 +234,15 @@ ToDo.propTypes = {
 };
 const mapStateToProps = (state) => {
   return {
-    tasks: state.todo.tasks,
-    loading: state.loading,
-    filteredTasks: state.todo.filteredTasks,
-    checkedTasks: state.todo.checkedTasks,
-    isOpenModal: state.todo.isOpenModal,
-    taskInfo: state.todo.taskInfo,
-    isOpenConfirmModal: state.todo.isOpenConfirmModal,
-    editableTask: state.todo.editableTask,
+    tasks: state.todoReducer.tasks,
+    loading: state.globalReducer.loading,
+    errorMessage: state.globalReducer.errorMessage,
+    filteredTasks: state.todoReducer.filteredTasks,
+    checkedTasks: state.todoReducer.checkedTasks,
+    isOpenModal: state.todoReducer.isOpenModal,
+    taskInfo: state.todoReducer.taskInfo,
+    isOpenConfirmModal: state.todoReducer.isOpenConfirmModal,
+    editableTask: state.todoReducer.editableTask,
   };
 };
 const mapDispatchToProps = (dispatch) => {

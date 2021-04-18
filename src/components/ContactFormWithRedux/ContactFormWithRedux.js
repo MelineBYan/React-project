@@ -1,17 +1,36 @@
-import React, { useContext } from "react";
-import { contactContext } from "../../Context/Context";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Form, Button, Col, Row, Container } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import {
+  setChangesForm,
+  resetContactData,
+  sendContactData,
+} from "../../Redux/actions";
 import Spinner from "../Spinner/Spinner";
 import styles from "./ContactFormWithHooks.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faExclamation } from "@fortawesome/free-solid-svg-icons";
 
-const ContactFormWithHooks = () => {
-  const context = useContext(contactContext);
-  const { formData, loading, errorMessage, handleChange, handleSend } = context;
+const ContactFormWithHooks = (props) => {
+  const {
+    history,
+    name,
+    email,
+    message,
+    loading,
+    errorMessage,
+    setChangesForm,
+    resetContactData,
+    sendContactData,
+  } = props;
+  useEffect(() => {
+    return function () {
+      resetContactData();
+    };
+  }, []);
   const inputs = [
     {
       name: "name",
@@ -39,13 +58,14 @@ const ContactFormWithHooks = () => {
         name={input.name}
         type={input.type}
         placeholder={input.placeholder}
-        onChange={handleChange}
-        value={formData[input.name].value}
+        onChange={({ target }) => setChangesForm(target)}
+        value={[input.name].value}
         as={input.as || undefined}
         rows={input.rows || undefined}
         className={styles.input}
+        autoComplete={"off"}
       />
-      {formData[input.name].valid ? (
+      {[input.name].valid ? (
         <FontAwesomeIcon
           icon={faCheck}
           style={{
@@ -73,22 +93,19 @@ const ContactFormWithHooks = () => {
     </Form.Group>
   ));
 
-  const error =
-    formData.name.error || formData.email.error || formData.message.error;
+  const error = name.error || email.error || message.error;
 
   return (
     <Container className="">
       <Row className="d-flex justify-content-center align-items-center mt-5">
         <Col xs={6} className="d-flex justify-content-end mr-0 pr-0">
-          {(formData.name.error ||
-            formData.email.error ||
-            formData.message.error) && (
+          {(name.error || email.error || message.error) && (
             <p
               className={styles.errorContainer}
               style={
-                formData.name.error
+                name.error
                   ? { bottom: "130px" }
-                  : formData.email.error
+                  : email.error
                   ? { bottom: "65px" }
                   : { bottom: "0px" }
               }
@@ -100,7 +117,7 @@ const ContactFormWithHooks = () => {
 
         <Col xs={6} className="pr-5">
           <p className=" mb-3 text-danger text-center h6">
-            {errorMessage.slice(6).toLowerCase()}
+            {errorMessage && errorMessage.slice(6).toLowerCase()}
           </p>
           <Form
             onSubmit={(e) => e.preventDefault()}
@@ -117,13 +134,11 @@ const ContactFormWithHooks = () => {
             <div className="row d-flex form-group justify-content-end">
               <Button
                 variant="info"
-                onClick={handleSend}
-                className={`${styles.btn} col`}
-                disabled={
-                  formData.name.error ||
-                  formData.email.error ||
-                  formData.message.error
+                onClick={() =>
+                  sendContactData({ name, email, message }, history)
                 }
+                className={`${styles.btn} col`}
+                disabled={!name.valid || !email.valid || !message.valid}
               >
                 <span>Send</span>
               </Button>
@@ -165,4 +180,23 @@ ContactFormWithHooks.propTypes = {
   }).isRequired,
 };
 
-export default withRouter(ContactFormWithHooks);
+const mapStateToProps = (state) => {
+  const { name, message, email } = state.contactReducer;
+  const { loading, errorMessage } = state.globalReducer;
+  return {
+    name,
+    message,
+    email,
+    loading,
+    errorMessage,
+  };
+};
+const mapDispatchToProps = {
+  setChangesForm,
+  resetContactData,
+  sendContactData,
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ContactFormWithHooks)
+);

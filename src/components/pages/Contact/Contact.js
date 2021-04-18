@@ -8,8 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Contact.module.css";
-import ContactFormWithHooks from "../../ContactFormWithHooks/ContactFormWithHooks";
-import ContactContextProvider from "../../../Context/Providers/ContactContextProvider";
+import ContactFormWithRedux from "../../ContactFormWithRedux/ContactFormWithRedux";
 
 const Contact = () => {
   return (
@@ -47,9 +46,7 @@ const Contact = () => {
         </Col>
 
         <Col xs={12} md={8} className=" mr-auto pr-5">
-          <ContactContextProvider>
-            <ContactFormWithHooks />
-          </ContactContextProvider>
+          <ContactFormWithRedux />
         </Col>
       </Row>
     </Container>

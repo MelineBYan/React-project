@@ -2,7 +2,7 @@ import {
   URL,
   SET_TASKS,
   DELETE_TASK,
-  TOGGLE_LOADING,
+  SET_LOADING,
   SET_FILTEREDTASKS,
   TOGGLE_CHECKED,
   SET_ISOPENMODAL,
@@ -16,8 +16,46 @@ import {
   SET_SINGLETASK,
   SET_ERROR,
   TOGGLE_EDIT,
+  SET_FORMDATA,
+  RESET_DATA,
+  RESET_CONTACT_DATA,
+  RESET_GLOBAL_DATA,
+  CHANGE_MODAL_FORM,
+  SET_DATE,
+  RESET_MODAL_DATA,
+  SET_INITIALSTATE,
+  SET_SUCCESS,
 } from "../Utils/Constants";
+import formatDate from "../Utils/helpers/dateFormatter";
 
+//Actions
+// Global
+export const setOrRemoveLoading = (isLoading) => {
+  return {
+    type: SET_LOADING,
+    payload: isLoading,
+  };
+};
+export const resetGlobalData = () => {
+  return {
+    type: RESET_GLOBAL_DATA,
+  };
+};
+
+export const setError = (message) => {
+  return {
+    type: SET_ERROR,
+    payload: message,
+  };
+};
+export const setSuccess = (message) => {
+  return {
+    type: SET_SUCCESS,
+    payload: message,
+  };
+};
+
+// ToDo && SingleTask
 export const setTasks = (tasks) => {
   return {
     type: SET_TASKS,
@@ -31,12 +69,6 @@ export const deleteTask = (id) => {
   };
 };
 
-export const setOrRemoveLoading = (isLoading) => {
-  return {
-    type: TOGGLE_LOADING,
-    payload: isLoading,
-  };
-};
 export const setFilteredTasks = (value) => {
   return {
     type: SET_FILTEREDTASKS,
@@ -70,20 +102,6 @@ export const setTaskInfo = (task) => {
     payload: task,
   };
 };
-export const setTask = (task) => {
-  return {
-    type: SET_SINGLETASK,
-    payload: task,
-  };
-};
-
-export const setIsOpenConfirmModal = (isOpen) => {
-  return {
-    type: SET_ISOPENCONFIRMMODAL,
-    payload: isOpen,
-  };
-};
-
 export const setEditableTask = (value) => {
   return {
     type: SET_EDITABLETASK,
@@ -91,16 +109,29 @@ export const setEditableTask = (value) => {
   };
 };
 
+export const resetData = () => {
+  return {
+    type: RESET_DATA,
+  };
+};
+export const setIsOpenConfirmModal = (isOpen) => {
+  return {
+    type: SET_ISOPENCONFIRMMODAL,
+    payload: isOpen,
+  };
+};
+
+export const setTask = (task) => {
+  return {
+    type: SET_SINGLETASK,
+    payload: task,
+  };
+};
+
 export const editTask = (value) => {
   return {
     type: EDIT_TASK,
     payload: value,
-  };
-};
-export const setError = (message) => {
-  return {
-    type: SET_ERROR,
-    payload: message,
   };
 };
 
@@ -121,59 +152,49 @@ export const toggleEdit = () => {
   };
 };
 
-export const setSingleTask = async (dispatch, props) => {
-  try {
-    const { id } = props.match.params;
-    const response = await fetch(`${URL}/task/${id}`);
-    const task = await response.json();
-    if (task.error) throw task.error;
-    dispatch(setTask(task));
-  } catch (err) {
-    console.error("error", err.message);
-    props.history.push(`/error/500${err.status}`);
-  }
+// Contact
+export const setFormData = (data) => {
+  return {
+    type: SET_FORMDATA,
+    payload: data,
+  };
 };
 
-export const editSingleTask = async (dispatch, task) => {
-  try {
-    dispatch(setError(null));
-    dispatch(setOrRemoveLoading(true));
-    const response = await fetch(`${URL}/task/${task._id}`, {
-      method: "PUT",
-      body: JSON.stringify(task),
-      headers: { "Content-type": "application/json" },
-    });
-    const data = await response.json();
-    if (data.error) throw data.error;
-    dispatch(setTask(data));
-    dispatch(toggleEdit());
-    dispatch(setOrRemoveLoading(false));
-    dispatch(setError(null));
-  } catch (error) {
-    dispatch(setOrRemoveLoading(false));
-    dispatch(setError(error.message));
-  }
+export const resetContactData = () => {
+  return {
+    type: RESET_CONTACT_DATA,
+  };
 };
 
-export const removeTask = async (dispatch, props) => {
-  try {
-    dispatch(setError(null));
-    dispatch(setOrRemoveLoading(true));
-
-    const { id } = props.match.params;
-    const response = await fetch(`${URL}/task/${id}`, {
-      method: "DELETE",
-    });
-    const data = await response.json();
-    if (data.error) throw data.error;
-    dispatch(setOrRemoveLoading(false));
-    props.history.push("/");
-  } catch (error) {
-    dispatch(setOrRemoveLoading(false));
-    dispatch(setError(error.message));
-  }
+// TaskModal
+export const resetModalData = () => {
+  return {
+    type: RESET_MODAL_DATA,
+  };
 };
 
+export const changeModalForm = (data) => {
+  return {
+    type: CHANGE_MODAL_FORM,
+    payload: data,
+  };
+};
+
+export const setDate = (date) => {
+  return {
+    type: SET_DATE,
+    payload: date,
+  };
+};
+export const setModalInitialState = (data) => {
+  return {
+    type: SET_INITIALSTATE,
+    payload: data,
+  };
+};
+
+// Thunks
+// ToDo && SingleTask
 export const getTasks = async (dispatch, props) => {
   try {
     dispatch(setOrRemoveLoading(true));
@@ -192,6 +213,7 @@ export const getTasks = async (dispatch, props) => {
 export const createTask = async (dispatch, task) => {
   try {
     dispatch(setOrRemoveLoading(true));
+    dispatch(setSuccess(null));
     const response = await fetch(`${URL}/task`, {
       method: "POST",
       body: JSON.stringify(task),
@@ -200,7 +222,9 @@ export const createTask = async (dispatch, task) => {
     const data = await response.json();
 
     if (data.error) throw data.error;
+    console.log("in fetch");
     dispatch(addTask(data));
+    dispatch(setSuccess("Task was added successfully!"));
   } catch (err) {
     console.log("err", err.message);
   } finally {
@@ -208,8 +232,10 @@ export const createTask = async (dispatch, task) => {
   }
 };
 
-export const updateTask = async (dispatch, task) => {
+export const updateTask = async (dispatch, task, path = null) => {
   try {
+    dispatch(setError(null));
+    dispatch(setSuccess(null));
     dispatch(setOrRemoveLoading(true));
     const response = await fetch(`${URL}/task/${task._id}`, {
       method: "PUT",
@@ -218,25 +244,40 @@ export const updateTask = async (dispatch, task) => {
     });
     const data = await response.json();
     if (data.error) throw data.error;
-    dispatch(editTask(data));
-  } catch (err) {
-    console.error(err.message);
+    if (!path) {
+      dispatch(editTask(data));
+    } else {
+      dispatch(setTask(data));
+      dispatch(toggleEdit());
+      dispatch(setError(null));
+    }
+    dispatch(setSuccess("Task was updated successfully!"));
+  } catch (error) {
+    dispatch(setError(error.message));
   } finally {
     dispatch(setOrRemoveLoading(false));
   }
 };
 
-export const removeOneTask = async (dispatch, id) => {
+export const removeOneTask = async (dispatch, id, history = null) => {
   try {
+    setError(null);
     dispatch(setOrRemoveLoading(true));
+    dispatch(setSuccess(null));
     const res = await fetch(`${URL}/task/${id}`, {
       method: "DELETE",
     });
     const data = await res.json();
     if (data.error) throw data.error;
-    dispatch(deleteTask(id));
+    if (!history) {
+      dispatch(deleteTask(id));
+    } else {
+      dispatch(setSuccess("Task was removed successfully!"));
+      history.push("/");
+    }
+    dispatch(setSuccess("Task was removed successfully!"));
   } catch (err) {
-    console.log(err.message);
+    setError(err.message);
   } finally {
     dispatch(setOrRemoveLoading(false));
   }
@@ -245,6 +286,7 @@ export const removeOneTask = async (dispatch, id) => {
 export const removeCheckedTasks = async (dispatch, checkedTasks) => {
   try {
     dispatch(setOrRemoveLoading(true));
+    dispatch(setSuccess(null));
     const res = await fetch(`${URL}/task`, {
       method: "PATCH",
       headers: { "Content-type": "application/json" },
@@ -252,14 +294,80 @@ export const removeCheckedTasks = async (dispatch, checkedTasks) => {
         tasks: Array.from(checkedTasks),
       }),
     });
-    const data = res.json();
+    const data = await res.json();
 
     if (data.error) throw data.error;
     dispatch(deleteCheckedTasks());
+    dispatch(setSuccess("Tasks were removed successfully!"));
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   } finally {
-    dispatch(setOrRemoveLoading(false));
     dispatch(setIsOpenConfirmModal(false));
+    dispatch(setOrRemoveLoading(false));
+  }
+};
+
+// SingleTask
+export const setSingleTask = async (dispatch, props) => {
+  try {
+    const { id } = props.match.params;
+    const response = await fetch(`${URL}/task/${id}`);
+    const task = await response.json();
+    if (task.error) throw task.error;
+    dispatch(setTask(task));
+  } catch (err) {
+    console.error("error", err.message);
+    props.history.push(`/error/500${err.status}`);
+  }
+};
+
+// Contact
+export const setChangesForm = (data) => (dispatch) => {
+  dispatch(setFormData(data));
+};
+
+export const sendContactData = (formData, history) => async (dispatch) => {
+  try {
+    dispatch(setError(null));
+    dispatch(setSuccess(null));
+    dispatch(setOrRemoveLoading(true));
+    const body = {
+      name: formData.name.value,
+      email: formData.email.value,
+      message: formData.message.value,
+    };
+    const res = await fetch(`${URL}/form`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: { "Content-type": "Application/json" },
+    });
+    const data = await res.json();
+    if (data.error) throw data.error;
+    dispatch(setError(null));
+    dispatch(setSuccess("Form was sent successfully!"));
+    history.push("/");
+  } catch (err) {
+    console.error(err.message);
+    dispatch(setOrRemoveLoading(false));
+    dispatch(setError(err.message));
+  }
+};
+export const resetContactState = () => (dispatch) => {
+  dispatch(resetData());
+};
+
+// TaskModal
+export const submitTaskModalForm = async (e, state, onSubmit) => {
+  try {
+    const { title, description, date } = state;
+    if (
+      !title.trim() ||
+      !description.trim() ||
+      (e.type === "keypress" && e.key !== "Enter")
+    )
+      return;
+    onSubmit({ ...state, date: formatDate(date) });
+  } catch (err) {
+    console.error(err.message);
   }
 };
