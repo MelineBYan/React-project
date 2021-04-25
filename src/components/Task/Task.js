@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./Task.module.css";
 import { memo } from "react";
 import PropTypes from "prop-types";
@@ -10,6 +10,8 @@ import {
   faEdit,
   faCheck,
   faInfo,
+  faCheckDouble,
+  faHourglassHalf,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Task = ({
@@ -20,6 +22,7 @@ const Task = ({
   completed,
   getEditableTask,
   getTaskInfo,
+  toggleTaskStatus,
   ...props
 }) => {
   const cls = [styles.content];
@@ -49,9 +52,20 @@ const Task = ({
       >
         <Card.Text className="d-inline-flex">
           <span className="mr-auto ml-3">{task.title}</span>
-
+          <Button
+            variant="info"
+            disabled={isCheckedAnyTask}
+            onClick={() => toggleTaskStatus(task)}
+          >
+            {task.status === "active" ? (
+              <FontAwesomeIcon icon={faHourglassHalf} />
+            ) : (
+              <FontAwesomeIcon icon={faCheckDouble} />
+            )}
+          </Button>
           <Button
             variant="warning"
+            className="mx-1"
             disabled={isCheckedAnyTask}
             onClick={() => getEditableTask(task)}
           >
@@ -60,14 +74,15 @@ const Task = ({
           <Button
             type="button"
             variant="secondary"
-            className="mx-1"
             onClick={(e) => handleDeleteTask(task._id)}
             disabled={isCheckedAnyTask}
           >
             <FontAwesomeIcon icon={faTrash} />
           </Button>
+
           <Button
-            variant="info"
+            variant="dark"
+            className="mx-1"
             disabled={isCheckedAnyTask}
             onClick={() => getTaskInfo(task)}
           >

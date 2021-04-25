@@ -9,7 +9,7 @@ import {
   sendContactData,
 } from "../../Redux/actions";
 import Spinner from "../Spinner/Spinner";
-import styles from "./ContactFormWithHooks.module.css";
+import styles from "./ContactFormWithRedux.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faExclamation } from "@fortawesome/free-solid-svg-icons";

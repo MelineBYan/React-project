@@ -6,6 +6,7 @@ import TaskModal from "../../Modal/TaskModal";
 import ConfirmModal from "../../Modal/ConfirmModal";
 import InfoModal from "../../Modal/InfoModal";
 import Spinner from "../../Spinner/Spinner";
+import Search from "../../Search/Search";
 import PropTypes from "prop-types";
 import {
   setFilteredTasks,
@@ -20,6 +21,7 @@ import {
   getTasks,
   removeOneTask,
   removeCheckedTasks,
+  toggleTaskStatus,
 } from "../../../Redux/actions";
 
 class ToDo extends Component {
@@ -48,7 +50,7 @@ class ToDo extends Component {
       updateTask,
       deleteTask,
       deleteCheckedTasks,
-      errorMessage,
+      toggleTaskStatus,
     } = this.props;
 
     const completedTasks = tasks.filter((task) => checkedTasks.has(task._id));
@@ -70,6 +72,7 @@ class ToDo extends Component {
             setIsOpenModal(true);
           }}
           getTaskInfo={setTaskInfo}
+          toggleTaskStatus={toggleTaskStatus}
         />
       ));
       return jsx;
@@ -77,9 +80,9 @@ class ToDo extends Component {
 
     return (
       <>
-        <Container className="mt-5 bg-light text-light bg-dark shadow-lg p-5">
-          <h1 className="text-center my-5">ToDolist Task Manager</h1>
-          <Row className="d-flex mt-5">
+        <Container className="mt-5 bg-light text-light bg-dark shadow-lg p-3">
+          <h1 className="text-center mb-5">ToDolist Task Manager</h1>
+          <Row className="d-flex">
             <Button
               className="col-4 ml-auto d-inline"
               variant="primary"
@@ -91,7 +94,6 @@ class ToDo extends Component {
             <Form.Control
               as="select"
               className="col-2 mr-auto ml-3 bg-secondary text-light"
-              custom
               onChange={({ target }) => setFilteredTasks(target.value)}
               disabled={!tasks.length}
             >
@@ -99,6 +101,9 @@ class ToDo extends Component {
               <option value="Completed">Completed</option>
               <option value="Uncompleted">Uncompleted</option>
             </Form.Control>
+          </Row>
+          <Row className="d-flex mt-4 justify-content-center">
+            <Search />
           </Row>
           <Row className="mt-5 d-flex justify-content-center align-content-center mx-auto">
             {tasks.length === 0 ? (
@@ -260,6 +265,8 @@ const mapDispatchToProps = (dispatch) => {
     deleteCheckedTasks: (checkedTasks) =>
       dispatch((dispatch) => removeCheckedTasks(dispatch, checkedTasks)),
     toggleAllChecked: () => dispatch(toggleAllChecked()),
+    toggleTaskStatus: (task) =>
+      dispatch((dispatch) => toggleTaskStatus(dispatch, task)),
   };
 };
 

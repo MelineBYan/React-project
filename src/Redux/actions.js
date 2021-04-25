@@ -25,6 +25,15 @@ import {
   RESET_MODAL_DATA,
   SET_INITIALSTATE,
   SET_SUCCESS,
+  SET_CLICK,
+  CHANGE_NAVBAR_DIRECTION,
+  RESET_NAVBAR_DATA,
+  CHANGE_SEARCH_VALUE,
+  SET_DROPDOWN_VALUE,
+  SET_DATEPICKER_DATE,
+  SORT_FILTER_TASKS,
+  TOGGLE_CLICK,
+  RESET_SEARCH_DATA,
 } from "../Utils/Constants";
 import formatDate from "../Utils/helpers/dateFormatter";
 
@@ -193,6 +202,56 @@ export const setModalInitialState = (data) => {
   };
 };
 
+//Navbar
+export const setClick = () => {
+  return {
+    type: SET_CLICK,
+  };
+};
+export const handleResize = (size) => {
+  return {
+    type: CHANGE_NAVBAR_DIRECTION,
+    payload: size,
+  };
+};
+export const resetNavbarData = () => {
+  return {
+    type: RESET_NAVBAR_DATA,
+  };
+};
+
+//Search
+export const changeSearchValue = (target) => {
+  return {
+    type: CHANGE_SEARCH_VALUE,
+    payload: target,
+  };
+};
+
+export const setDropdownValue = (...data) => {
+  return {
+    type: SET_DROPDOWN_VALUE,
+    payload: data,
+  };
+};
+export const setDatepickerDate = (...data) => {
+  return {
+    type: SET_DATEPICKER_DATE,
+    payload: data,
+  };
+};
+export const toggleClick = (value) => {
+  return {
+    type: TOGGLE_CLICK,
+    payload: value,
+  };
+};
+export const resetSearchData = () => {
+  return {
+    type: RESET_SEARCH_DATA,
+  };
+};
+
 // Thunks
 // ToDo && SingleTask
 export const getTasks = async (dispatch, props) => {
@@ -222,7 +281,6 @@ export const createTask = async (dispatch, task) => {
     const data = await response.json();
 
     if (data.error) throw data.error;
-    console.log("in fetch");
     dispatch(addTask(data));
     dispatch(setSuccess("Task was added successfully!"));
   } catch (err) {
@@ -276,6 +334,27 @@ export const removeOneTask = async (dispatch, id, history = null) => {
       history.push("/");
     }
     dispatch(setSuccess("Task was removed successfully!"));
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    dispatch(setOrRemoveLoading(false));
+  }
+};
+
+export const toggleTaskStatus = async (dispatch, task) => {
+  try {
+    dispatch(setOrRemoveLoading(true));
+    dispatch(setSuccess(null));
+    const status = task.status === "done" ? "active" : "done";
+    const response = await fetch(`${URL}/task/${task._id}`, {
+      method: "PUT",
+      body: JSON.stringify({ status }),
+      headers: { "Content-type": "application/json" },
+    });
+    const data = await response.json();
+    if (data.error) throw data.error;
+    dispatch(editTask(data));
+    dispatch(setSuccess("Task was updated successfully!"));
   } catch (err) {
     setError(err.message);
   } finally {
@@ -369,5 +448,37 @@ export const submitTaskModalForm = async (e, state, onSubmit) => {
     onSubmit({ ...state, date: formatDate(date) });
   } catch (err) {
     console.error(err.message);
+  }
+};
+
+//Search
+export const sortOrFilrterTasks = async (dispatch, state) => {
+  try {
+    let body = { ...state };
+    delete body.click;
+
+    let query = Object.entries(body)
+      .reduce(
+        (q, elem) => q + (elem[1] ? elem[0] + "=" + elem[1] + "&" : ""),
+        "?"
+      )
+      .slice(0, -1);
+    if (query.length > 1) {
+      dispatch(setError(null));
+      dispatch(setSuccess(null));
+      dispatch(setOrRemoveLoading(true));
+      const res = await fetch(`${URL}/task${query}`);
+      const data = await res.json();
+      if (data.error) throw data.error;
+      dispatch(setError(null));
+      dispatch(setOrRemoveLoading(false));
+      dispatch(setSuccess("Tasks were sorted successfully!"));
+      dispatch(setTasks(data));
+      dispatch(resetSearchData());
+      dispatch(toggleClick(false));
+    }
+  } catch (err) {
+    dispatch(setOrRemoveLoading(false));
+    dispatch(setError(err.message));
   }
 };

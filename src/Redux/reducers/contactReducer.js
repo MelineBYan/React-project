@@ -32,7 +32,7 @@ const contactReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_FORMDATA: {
       const { name, value } = action.payload;
-      let valid = true;
+      let valid = false;
       let error =
         isRequired(value.trim(), name) ||
         minLength1(value.trim()) ||
@@ -40,7 +40,9 @@ const contactReducer = (state = initialState, action) => {
         (name === "email" && validateEmail(value.trim())) ||
         (name === "message" && maxLength100(value.trim()));
 
-      if (!error) valid = true;
+      if (!error) {
+        valid = true;
+      }
       return {
         ...state,
         [name]: { value, error, valid },

@@ -88,6 +88,7 @@ TaskModal.propTypes = {
     description: PropTypes.string.isRequired,
   }),
 };
+
 const mapStateToProps = (state) => {
   return {
     state: state.taskModalReducer,
@@ -98,10 +99,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     changeModalForm: (data) => dispatch(changeModalForm(data)),
     setDate: (date) => dispatch(setDate(date)),
-    // submitTaskModalForm: (e, state, onSubmit, editablTask) =>
-    //   dispatch((dispatch) =>
-    //     submitTaskModalForm(dispatch, e, state, onSubmit, editablTask)
-    //   ),
     setState: (data) => dispatch(setModalInitialState(data)),
     resetModalData: () => dispatch(resetModalData()),
   };

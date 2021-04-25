@@ -94,7 +94,7 @@ const todoReduser = (state = initialState, action) => {
     }
     case EDIT_TASK: {
       const tasks = [...state.tasks];
-      tasks[tasks.findIndex((t) => t._id === state.editableTask._id)] =
+      tasks[tasks.findIndex((t) => t._id === action.payload._id)] =
         action.payload;
       return {
         ...state,

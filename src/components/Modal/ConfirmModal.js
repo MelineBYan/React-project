@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 
@@ -34,4 +34,4 @@ Confirm.propTypes = {
     .isRequired,
 };
 
-export default Confirm;
+export default memo(Confirm);
