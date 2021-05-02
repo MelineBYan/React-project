@@ -38,7 +38,7 @@ const Task = ({
   }
 
   return (
-    <Col xs={12} sm={12} md={12} lg={12} xl={12} className=" d-flex my-3 py-0">
+    <Col xs={12} sm={12} md={12} lg={12} xl={12} className=" d-flex my-2 py-0">
       <Button
         variant="light"
         className={`${styles.completeBtn}`}

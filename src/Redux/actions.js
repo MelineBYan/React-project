@@ -257,12 +257,15 @@ export const resetSearchData = () => {
 export const getTasks = async (dispatch, props) => {
   try {
     dispatch(setOrRemoveLoading(true));
-    const res = await fetch("http://localhost:3001/task");
+    const res = await fetch(`${URL}/task`);
+    console.log(URL);
+    console.log(process.env);
     const tasks = await res.json();
     if (tasks.error) throw tasks.error;
     dispatch(setTasks(tasks));
   } catch (err) {
     console.error(err.message);
+    dispatch(setError(err.message));
     props.history.push("/error/404");
   } finally {
     dispatch(setOrRemoveLoading(false));
@@ -456,7 +459,6 @@ export const sortOrFilrterTasks = async (dispatch, state) => {
   try {
     let body = { ...state };
     delete body.click;
-
     let query = Object.entries(body)
       .reduce(
         (q, elem) => q + (elem[1] ? elem[0] + "=" + elem[1] + "&" : ""),

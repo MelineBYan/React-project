@@ -13,34 +13,34 @@ import ContactFormWithRedux from "../../ContactFormWithRedux/ContactFormWithRedu
 const Contact = () => {
   return (
     <Container className={`fluid ${styles.cover} `}>
-      <h1 className="text-center ">Contact Us</h1>
-      <Row className=" mt-5 pt-5  align-items-center justify-content-space-around mx-5">
+      <h1 className={styles.title}>
+        Contact me<span className={styles.span}>Contact me</span>
+      </h1>
+      <Row className=" mt-5   align-items-center justify-content-space-around mx-5">
         <Col xs={12} md={4} className=" ml-auto  mt-5 ">
           <div>
             <div className={styles.iconWrapper}>
-              <FontAwesomeIcon icon={faMapMarker} className="text-dark h4" />
+              <FontAwesomeIcon icon={faMapMarker} className="text-dark h3" />
             </div>
-            <span className="text-info font-weight-bold ml-3 h5">
-              Address, City, Country
+            <span className="font-weight-bold ml-3 h5">
+              c. Armavir, Armenia
             </span>
           </div>
           <div>
             <div className={styles.iconWrapper}>
-              <FontAwesomeIcon icon={faPhone} className="text-dark h4" />
+              <FontAwesomeIcon icon={faPhone} className="text-dark h3" />
             </div>
-            <span className="text-info font-weight-bold ml-3 h5">
-              Phone +374 00 000000
-            </span>
+            <span className="font-weight-bold ml-3 h5">+374 94 33 14 20</span>
           </div>
           <div>
             <div className={styles.iconWrapper}>
               <FontAwesomeIcon
                 icon={faEnvelopeOpenText}
-                className="text-dark h4"
+                className="text-dark h3"
               />
             </div>
-            <span className="text-info font-weight-bold ml-3 h5">
-              Email contact@email.com
+            <span className="font-weight-bold ml-3 h5">
+              meline.barseghyan.91@gmail.com
             </span>
           </div>
         </Col>

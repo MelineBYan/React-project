@@ -12,6 +12,7 @@ const HeaderBar = (props) => {
   const { width, clickMenuBars } = state;
 
   useEffect(() => {
+    handleResize(window.innerWidth);
     window.addEventListener("resize", () => handleResize(window.innerWidth));
     return () => {
       window.removeEventListener("resize", () =>

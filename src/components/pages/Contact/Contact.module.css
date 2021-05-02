@@ -1,6 +1,6 @@
 .iconWrapper {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 30px;
   background-color: white;
   display: inline-flex;
@@ -17,4 +17,19 @@
   background-size: cover;
   height: 93vh;
   overflow: hidden;
+}
+.title {
+  font-size: 40px;
+  position: relative;
+  padding-bottom: 1rem;
+  letter-spacing: 3px;
+  margin: 50px 160px;
+}
+.span {
+  position: absolute;
+  top: 15%;
+  left: 0;
+  font-size: 80px;
+  color: midnightblue;
+  opacity: 0.1;
 }

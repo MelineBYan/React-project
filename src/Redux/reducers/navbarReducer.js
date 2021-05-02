@@ -9,10 +9,9 @@ const initialState = { width: null, clickMenuBars: false };
 const navbarReducer = (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_NAVBAR_DIRECTION: {
-      const clickMenuBars = state.width > 600 ? "false" : "true";
       return {
         width: action.payload,
-        clickMenuBars,
+        clickMenuBars: action.payload > 600 ? "false" : "true",
       };
     }
     case SET_CLICK: {

@@ -191,7 +191,7 @@ const Search = (props) => {
           <Col className="justify-content-center align-items-start ">
             {!click ? (
               <Button variant="info" onClick={() => toggleClick(true)}>
-                Date
+                Dates
               </Button>
             ) : (
               datePickersJSX
