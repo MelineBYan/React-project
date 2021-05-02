@@ -16,8 +16,8 @@ const About = () => {
         <Row className={styles.aboutInfo}>
           <p className={styles.text}>
             I am a future Web developer. I have been interested in the
-            programming for a long time. I have taken the opportunity to learn
-            and acquire a new profession․ I'm always in for learning new stuff,
+            programming for a long time. I took the opportunity to learn and
+            acquire a new profession․ I'm always in for learning new stuff,
             seeking to improve and grow as a professional and as a person.
           </p>
         </Row>
