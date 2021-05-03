@@ -20,7 +20,7 @@ const Contact = () => {
         <Col xs={12} md={4} className=" ml-auto  mt-5 ">
           <div>
             <div className={styles.iconWrapper}>
-              <FontAwesomeIcon icon={faMapMarker} className="text-dark h3" />
+              <FontAwesomeIcon icon={faMapMarker} className="text-dark h5" />
             </div>
             <span className="font-weight-bold ml-3 h5">
               c. Armavir, Armenia
@@ -28,7 +28,7 @@ const Contact = () => {
           </div>
           <div>
             <div className={styles.iconWrapper}>
-              <FontAwesomeIcon icon={faPhone} className="text-dark h3" />
+              <FontAwesomeIcon icon={faPhone} className="text-dark h5" />
             </div>
             <span className="font-weight-bold ml-3 h5">+374 94 33 14 20</span>
           </div>
@@ -36,7 +36,7 @@ const Contact = () => {
             <div className={styles.iconWrapper}>
               <FontAwesomeIcon
                 icon={faEnvelopeOpenText}
-                className="text-dark h3"
+                className="text-dark h5"
               />
             </div>
             <span className="font-weight-bold ml-3 h5">

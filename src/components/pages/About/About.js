@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Row } from "react-bootstrap";
 import styles from "./About.module.css";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLinkedin } from "@fortawesome/free-solid-svg-icons";
 
 const About = () => {
   return (
@@ -39,6 +41,10 @@ const About = () => {
         </Row>
         <Row></Row>
       </div>
+      <Footer>
+        {/* <FontAwesomeIcon icon={} className="text-dark h5" /> */}
+        {/* <FontAwesomeIcon icon={faLinkedin} className="text-dark h5" /> */}
+      </Footer>
     </Container>
   );
 };
