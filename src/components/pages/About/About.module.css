@@ -1,6 +1,6 @@
-.aboutInfo {
+.container {
+  /* height: 100vh; */
 }
-
 .aboutSection {
   width: 800px;
   height: 800px;
@@ -16,7 +16,7 @@
 }
 .span {
   position: absolute;
-  top: 15%;
+  top: 25%;
   left: 0;
   font-size: 80px;
   color: midnightblue;
@@ -31,4 +31,26 @@
   font-style: oblique;
   font-weight: bolder;
   color: midnightblue;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 2px;
+  position: relative;
+}
+.btn::after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0.3rem;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  transition: all 0.4s ease-in-out;
+}
+.btn:hover::after {
+  width: 100%;
 }

@@ -19,7 +19,7 @@
   overflow: hidden;
 }
 .title {
-  font-size: 40px;
+  font-size: 60px;
   position: relative;
   padding-bottom: 1rem;
   letter-spacing: 3px;
@@ -27,9 +27,9 @@
 }
 .span {
   position: absolute;
-  top: 15%;
+  top: 25%;
   left: 0;
-  font-size: 80px;
+  font-size: 100px;
   color: midnightblue;
   opacity: 0.1;
 }
