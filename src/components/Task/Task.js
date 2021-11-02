@@ -38,10 +38,10 @@ const Task = ({
   }
 
   return (
-    <Col xs={12} sm={12} md={12} lg={12} xl={12} className=" d-flex my-2 py-0">
+    <Col md={12} lg={12} xl={12} className=" d-flex my-2 py-0">
       <Button
         variant="light"
-        className={`${styles.completeBtn}`}
+        className={`${styles.completeBtn} ${styles.icon}`}
         onClick={() => handleToggleChecked(task._id)}
       >
         <FontAwesomeIcon icon={faCheck} className={clscheck.join(" ")} />
@@ -53,6 +53,7 @@ const Task = ({
         <Card.Text className="d-inline-flex">
           <span className="mr-auto ml-3">{task.title}</span>
           <Button
+            className={`${styles.icon}`}
             variant="info"
             disabled={isCheckedAnyTask}
             onClick={() => toggleTaskStatus(task)}
@@ -65,13 +66,14 @@ const Task = ({
           </Button>
           <Button
             variant="warning"
-            className="mx-1"
+            className={`mx-1 ${styles.icon}`}
             disabled={isCheckedAnyTask}
             onClick={() => getEditableTask(task)}
           >
             <FontAwesomeIcon icon={faEdit} />
           </Button>
           <Button
+            className={`${styles.icon}`}
             type="button"
             variant="secondary"
             onClick={(e) => handleDeleteTask(task._id)}
@@ -82,7 +84,7 @@ const Task = ({
 
           <Button
             variant="dark"
-            className="mx-1"
+            className={`mx-1 ${styles.icon}`}
             disabled={isCheckedAnyTask}
             onClick={() => getTaskInfo(task)}
           >
@@ -93,6 +95,7 @@ const Task = ({
     </Col>
   );
 };
+
 Task.propTypes = {
   history: PropTypes.shape({
     action: PropTypes.string,

@@ -1,0 +1,13 @@
+.taskContainer {
+  width: 700px;
+}
+@media only screen and (max-width: 760px) {
+  .taskContainer {
+    width: 500px;
+  }
+}
+@media only screen and (max-width: 760px) {
+  .taskContainer {
+    width: 310px;
+  }
+}

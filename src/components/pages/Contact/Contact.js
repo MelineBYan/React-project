@@ -12,25 +12,29 @@ import ContactFormWithRedux from "../../ContactFormWithRedux/ContactFormWithRedu
 
 const Contact = () => {
   return (
-    <Container className={`fluid ${styles.cover} `}>
+    <Container
+      className={`fluid ${styles.cover} bg-light text-light bg-dark shadow-lg `}
+    >
       <h1 className={styles.title}>
         Contact me<span className={styles.span}>Contact me</span>
       </h1>
-      <Row className=" mt-5   align-items-center justify-content-space-around mx-5">
-        <Col xs={12} md={4} className=" ml-auto  mt-5 ">
-          <div>
+      <Row className=" mt-5 align-items-center justify-content-space-around ml-2">
+        <Col xs={12} sm={12} md={12} lg={5} className=" mt-5 ">
+          <div className={styles.infoWrapper}>
             <div className={styles.iconWrapper}>
               <FontAwesomeIcon icon={faMapMarker} className="text-dark h5" />
             </div>
-            <span className="font-weight-bold ml-3 h5">
-              c. Armavir, Armenia
+            <span className={`font-weight-bold ml-3 h5 ${styles.info}`}>
+              c. Erevan, Armenia
             </span>
           </div>
           <div>
             <div className={styles.iconWrapper}>
               <FontAwesomeIcon icon={faPhone} className="text-dark h5" />
             </div>
-            <span className="font-weight-bold ml-3 h5">+374 94 33 14 20</span>
+            <span className={`font-weight-bold ml-3 h5 ${styles.info}`}>
+              +374 94 33 14 20
+            </span>
           </div>
           <div>
             <div className={styles.iconWrapper}>
@@ -39,13 +43,19 @@ const Contact = () => {
                 className="text-dark h5"
               />
             </div>
-            <span className="font-weight-bold ml-3 h5">
+            <span className={`font-weight-bold ml-3 h5 ${styles.info}`}>
               meline.barseghyan.91@gmail.com
             </span>
           </div>
         </Col>
 
-        <Col xs={12} md={8} className=" mr-auto pr-5">
+        <Col
+          xs={12}
+          sm={12}
+          lg={7}
+          md={12}
+          className="d-flex justify-content-center mb-5"
+        >
           <ContactFormWithRedux />
         </Col>
       </Row>

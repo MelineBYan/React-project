@@ -37,3 +37,13 @@
   color: green;
   cursor: pointer;
 }
+@media only screen and (max-width: 510px) {
+  .content {
+    flex: 0 0 240px;
+    margin-left: 0px;
+    padding: 0px;
+  }
+  .icon {
+    padding: 5px;
+  }
+}

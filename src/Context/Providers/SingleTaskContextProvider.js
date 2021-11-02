@@ -47,7 +47,6 @@ const SingleTaskContextProvider = (props) => {
         props.history.push("/");
       })
       .catch((err) => {
-        console.log("delete error", err.message);
         setLoading(false);
         setErrorMessage(err.message);
       });

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import TaskModal from "../../../Modal/TaskModal";
+import styles from "./singleTaskWithRedux.module.css";
 import PropTypes from "prop-types";
 import Spinner from "../../../Spinner/Spinner";
 import {
@@ -42,10 +43,10 @@ const SingleTaskWithRedux = (props) => {
   return (
     <>
       <Card
-        className="text-light mx-auto mb-3"
+        className={`text-light mx-auto mb-3 ${styles.taskContainer}`}
         style={{
           backgroundColor: "rgba(25, 25, 112, .9)",
-          width: "700px",
+          // width: "700px",
           height: "300px",
           borderRadius: "10px",
           marginTop: "100px",
@@ -130,7 +131,6 @@ const SingleTaskWithRedux = (props) => {
           editableTask={{ ...singleTask, date: new Date(singleTask.date) }}
         />
       )}
-
       {loading && <Spinner />}
     </>
   );

@@ -1,9 +1,5 @@
-.container {
-  /* height: 100vh; */
-}
 .aboutSection {
   width: 800px;
-  height: 800px;
   margin: 150px 70px;
 }
 
@@ -53,4 +49,14 @@
 }
 .btn:hover::after {
   width: 100%;
+}
+@media only screen and (max-width: 768px) {
+  .aboutSection {
+    width: 400px;
+  }
+}
+@media only screen and (max-width: 510px) {
+  .aboutSection {
+    width: 200px;
+  }
 }

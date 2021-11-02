@@ -258,8 +258,6 @@ export const getTasks = async (dispatch, props) => {
   try {
     dispatch(setOrRemoveLoading(true));
     const res = await fetch(`${URL}/task`);
-    console.log(URL);
-    console.log(process.env);
     const tasks = await res.json();
     if (tasks.error) throw tasks.error;
     dispatch(setTasks(tasks));
@@ -271,7 +269,6 @@ export const getTasks = async (dispatch, props) => {
     dispatch(setOrRemoveLoading(false));
   }
 };
-
 export const createTask = async (dispatch, task) => {
   try {
     dispatch(setOrRemoveLoading(true));

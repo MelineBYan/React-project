@@ -8,6 +8,7 @@ import InfoModal from "../../Modal/InfoModal";
 import Spinner from "../../Spinner/Spinner";
 import Search from "../../Search/Search";
 import PropTypes from "prop-types";
+import styles from "./ToDo.module.css";
 import {
   setFilteredTasks,
   toggleCheckedTask,
@@ -80,27 +81,18 @@ class ToDo extends Component {
 
     return (
       <>
-        <Container className="mt-5 bg-light text-light bg-dark shadow-lg p-3">
+        <Container
+          className={`mt-5 bg-light text-light bg-dark shadow-lg  ${styles.todoContainer}`}
+        >
           <h1 className="text-center mb-5">ToDolist Task Manager</h1>
           <Row className="d-flex">
             <Button
-              className="col-4 ml-auto d-inline"
+              className="col-3 m-auto d-inline"
               variant="primary"
               onClick={() => setIsOpenModal(true)}
             >
-              Add new task
+              Add
             </Button>
-
-            <Form.Control
-              as="select"
-              className="col-2 mr-auto ml-3 bg-secondary text-light"
-              onChange={({ target }) => setFilteredTasks(target.value)}
-              disabled={!tasks.length}
-            >
-              <option value="All">All</option>
-              <option value="Completed">Completed</option>
-              <option value="Uncompleted">Uncompleted</option>
-            </Form.Control>
           </Row>
           <Row className="d-flex mt-4 justify-content-center">
             <Search />
@@ -131,7 +123,7 @@ class ToDo extends Component {
                 <Button
                   variant="primary"
                   onClick={toggleAllChecked}
-                  className="ml-5"
+                  className="ml-1"
                   disabled={filteredTasks === "Completed"}
                 >
                   {tasks.length !== checkedTasks.size

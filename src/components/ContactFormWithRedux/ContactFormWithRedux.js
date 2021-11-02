@@ -96,9 +96,9 @@ const ContactFormWithHooks = (props) => {
   const error = name.error || email.error || message.error;
 
   return (
-    <Container className="">
+    <Container>
       <Row className="d-flex justify-content-center align-items-center mt-5">
-        <Col xs={6} className="d-flex justify-content-end mr-0 pr-0">
+        <Col xs={2} className="d-flex justify-content-end ">
           {(name.error || email.error || message.error) && (
             <p
               className={styles.errorContainer}
@@ -115,16 +115,17 @@ const ContactFormWithHooks = (props) => {
           )}
         </Col>
 
-        <Col xs={6} className="pr-5">
+        <Col xs={10} className={`${styles.formWrapper}`}>
           <p className=" mb-3 text-danger text-center h6">
             {errorMessage && errorMessage.slice(6).toLowerCase()}
           </p>
           <Form
             onSubmit={(e) => e.preventDefault()}
+            className={styles.form}
             style={{
-              minWidth: "350px",
-              backdropFilter: "blur(50px)",
-              backgroundColor: "inherit",
+              width: "450px",
+              backdropFilter: "blur(10px)",
+              backgroundColor: "midnightBlue",
               borderRadius: "8px",
               boxShadow: "20px 20px 22px rgba(0, 0,0, 0.2)",
               padding: "45px",

@@ -9,7 +9,7 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 const About = () => {
   return (
-    <Container className="mt-5  bg-light text-light bg-dark shadow-lg p-3">
+    <Container className="bg-light text-light bg-dark shadow-lg ">
       <h1 className={styles.title}>
         About me<span className={styles.span}>About me</span>
       </h1>
@@ -19,12 +19,11 @@ const About = () => {
         </h4>
         <Row className={styles.aboutInfo}>
           <p className={styles.text}>
-            I am a future Web developer. I have been interested in the
-            programming for a long time. I took this opportunity to learn and
-            acquire a new profession․ I'm always in for learning new stuff,
-            seeking to improve and grow as a professional and as a person. Right
-            now I am in the seek of an internship position or an entry level
-            position with an exciting company.
+            I am a Full Stack developer. I currently work at Preezma - a
+            software development and IT consulting company in Yerevan, Armenia.
+            Coding is my passion. I spend most of my free time learning new
+            technologies. I am proficient in Javascript, React.js, Node.js,
+            Typescript.
           </p>
         </Row>
         <Row>

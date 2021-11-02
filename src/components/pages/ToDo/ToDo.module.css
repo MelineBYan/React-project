@@ -1,0 +1,5 @@
+@media only screen and (max-width: 510px) {
+  .todoContainer {
+    padding: 0px 0px !important;
+  }
+}
